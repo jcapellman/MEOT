@@ -18,12 +18,14 @@ namespace MEOT.lib.Managers
 
             foreach (var source in _sources)
             {
-                var key = settings.Sources[source.Name];
+                var key = settings?.Sources[source.Name];
                 
                 source.Initialize(key);
             }
         }
 
+        public List<string> SourceNames => _sources.Select(a => a.Name).ToList();
+        
         public Dictionary<string, Dictionary<string, bool>> CheckSources(string hash)
         {
             var result = new Dictionary<string, Dictionary<string, bool>>();
