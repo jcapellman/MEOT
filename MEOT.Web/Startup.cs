@@ -1,5 +1,7 @@
 using MEOT.lib.DAL;
 using MEOT.lib.DAL.Base;
+using MEOT.lib.Managers;
+using MEOT.lib.Objects;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,7 +24,17 @@ namespace MEOT.web
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<IDAL>(new LiteDBDAL()); // Using LiteDB
+
+            var db = new LiteDBDAL();
+
+            var settings = db.SelectFirstOrDefault<Settings>();
+
+            var sourceManager = new SourceManager(settings);
+
+            new SettingsManager(db).UpdateSources(sourceManager.SourceNames);
+
+            services.AddSingleton<IDAL>(db); // Using LiteDB
+            services.AddSingleton(sourceManager);
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
