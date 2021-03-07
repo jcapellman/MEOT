@@ -1,6 +1,5 @@
 using MEOT.lib.DAL;
 using MEOT.lib.DAL.Base;
-using MEOT.Web.Data;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,7 +22,6 @@ namespace MEOT.Web
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<IDAL>(new LiteDBDAL()); // Using LiteDB
         }
         
