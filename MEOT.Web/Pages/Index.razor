@@ -1,2 +1,64 @@
 ﻿@page "/"
 
+@using MEOT.lib.DAL.Base
+@using MEOT.lib.Objects
+@using MEOT.lib.Containers
+
+@inject IDAL db
+@inject NavigationManager NavManager
+
+<h1>Malware Efficacy Over Time</h1>
+
+<h2>Tracked Malware Summary</h2>
+
+@if (malware == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (!malware.Any())
+{
+   <p>No Tracked Malware is enabled - add some <a href="/AddEditMalware">here</a></p>
+} else  {
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>SHA1</th>
+            <th>Format</th>
+            <th>Detections</th>
+            <th>Days Old</th>
+            
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in malware)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.SHA1></td>
+                <td>@item.Format</td>
+                <td>@item.NumDetections</td>
+                <td>@item.DaysOld</td>
+                <td>
+                    <button class="btn btn-rounded" @onclick="() => ViewDetail(item)" title="View"><i class="bi-files"></i></button>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Malware> malware;
+
+    protected void ViewDetail(Malware item)
+    {
+        NavManager.NavigateTo($"MalwareAnalysis/{item.Id}");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        malware = db.SelectAll<Malware>().Where(a => a.Enabled).ToList();
+    }
+}
