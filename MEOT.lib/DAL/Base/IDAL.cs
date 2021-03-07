@@ -15,5 +15,7 @@ namespace MEOT.lib.DAL.Base
         void Update<T>(T item) where T : BaseObject;
 
         T SelectOne<T>(int id) where T : BaseObject;
+
+        T SelectFirstOrDefault<T>() where T : BaseObject;
     }
 }
