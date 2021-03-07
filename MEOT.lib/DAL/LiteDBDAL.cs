@@ -36,5 +36,23 @@ namespace MEOT.lib.DAL
 
             collection.Delete(item.Id);
         }
+
+        public void Update<T>(T item) where T : BaseObject
+        {
+            using var db = new LiteDB.LiteDatabase(DB_NAME);
+
+            var collection = db.GetCollection<T>();
+
+            collection.Update(item);
+        }
+
+        public T SelectOne<T>(int id) where T : BaseObject
+        {
+            using var db = new LiteDB.LiteDatabase(DB_NAME);
+
+            var collection = db.GetCollection<T>();
+
+            return collection.FindById(id);
+        }
     }
 }
