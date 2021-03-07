@@ -1,0 +1,63 @@
+﻿@page "/Settings"
+
+@using MEOT.lib.DAL.Base
+@using MEOT.lib.Objects
+
+@inject IDAL db
+
+<h1>Settings</h1>
+
+<EditForm Model="@model" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    
+    <p>
+        <label>
+            Virus Total Key
+        
+            <InputText id="vtkey" @bind-Value="model.VTKey" />
+        </label>
+    </p>
+    
+    <p>
+        <label>
+            Hours Between Checks
+        
+            <InputNumber id="intervalforchecks" @bind-Value="model.HoursBetweenChecks" />
+        </label>
+    </p>
+
+    <button type="submit" class="btn btn-primary btn-rounded"><i class="bi-save"></i>&nbsp; Save</button>
+</EditForm>
+
+@code {
+    private Settings model = new Settings();
+
+    private bool IsNew = false;
+
+    protected override void OnInitialized()
+    {
+        model = db.SelectFirstOrDefault<Settings>();
+
+        if (model != null)
+        {
+            return;
+        }
+
+        model = new Settings();
+
+        IsNew = true;
+    }
+
+    private void HandleValidSubmit()
+    {
+        if (IsNew)
+        {
+            db.Insert(model);
+        }
+        else
+        {
+            db.Update(model);
+        }
+    }
+}
