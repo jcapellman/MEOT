@@ -6,8 +6,8 @@ namespace MEOT.lib.DAL.Base
 {
     public interface IDAL
     {
-        void InsertAsync(BaseObject item);
+        void Insert<T>(T item) where T: BaseObject;
 
-        public List<BaseObject> SelectAll<T>() where T : BaseObject;
+        public List<T> SelectAll<T>() where T : BaseObject;
     }
 }
