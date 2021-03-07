@@ -15,11 +15,11 @@ namespace MEOT.worker
     {
         private readonly ILogger<Worker> _logger;
 
-        private Settings _settings;
+        private readonly Settings _settings;
 
         private IDAL _db;
 
-        private SourceManager _sourceManager;
+        private readonly SourceManager _sourceManager;
 
         public Worker(ILogger<Worker> logger, IDAL db)
         {
@@ -42,8 +42,28 @@ namespace MEOT.worker
                 {
                     var sourceResult = _sourceManager.CheckSources(item.SHA1);
 
-                    // TODO: Iterate through sources and create MalwareCheckpoints
-                    // TODO: Update the root malware object
+                    item.NumDetections = 0;
+
+                    foreach (var source in sourceResult)
+                    {
+                        var checkpoint = new MalwareCheckpoint
+                        {
+                            MalwareId = item.Id, 
+                            SourceName = source.Key
+                        };
+                        
+                        var result = source.Value;
+
+                        checkpoint.Payload = System.Text.Json.JsonSerializer.Serialize(result);
+                        checkpoint.Detections = result.Values.Count(a => a);
+                        checkpoint.Vendors = result.Keys.Count;
+
+                        _db.Insert(checkpoint);
+
+                        item.NumDetections += checkpoint.Detections;
+                    }
+                    
+                    _db.Update(item);
                 }
                 
                 // Wait the interval
