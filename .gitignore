@@ -6,3 +6,4 @@ typings/
 *.lock.json
 /Properties/PublishProfiles
 *.user
+*.db
