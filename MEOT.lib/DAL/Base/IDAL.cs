@@ -11,5 +11,9 @@ namespace MEOT.lib.DAL.Base
         public List<T> SelectAll<T>() where T : BaseObject;
 
         void Delete<T>(T item) where T : BaseObject;
+
+        void Update<T>(T item) where T : BaseObject;
+
+        T SelectOne<T>(int id) where T : BaseObject;
     }
 }
