@@ -10,15 +10,7 @@
 <EditForm Model="@model" OnValidSubmit="@HandleValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
-    
-    <p>
-        <label>
-            Virus Total Key
-        
-            <InputText id="vtkey" @bind-Value="model.VTKey" />
-        </label>
-    </p>
-    
+
     <p>
         <label>
             Hours Between Checks
@@ -26,6 +18,8 @@
             <InputNumber id="intervalforchecks" @bind-Value="model.HoursBetweenChecks" />
         </label>
     </p>
+    
+    <h3>Source License Keys</h3>
 
     <button type="submit" class="btn btn-primary btn-rounded"><i class="bi-save"></i>&nbsp; Save</button>
 </EditForm>
