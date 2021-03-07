@@ -57,5 +57,14 @@ namespace MEOT.lib.DAL
 
             return collection.FindById(id);
         }
+
+        public T SelectFirstOrDefault<T>() where T : BaseObject
+        {
+            using var db = new LiteDB.LiteDatabase(DB_NAME);
+
+            var collection = db.GetCollection<T>();
+
+            return collection.FindOne(a => a != null);
+        }
     }
 }
