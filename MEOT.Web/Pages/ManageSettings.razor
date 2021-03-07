@@ -20,6 +20,17 @@
     </p>
     
     <h3>Source License Keys</h3>
+    @foreach (var source in model.Sources)
+    {
+        <p>
+            <label>
+                @source.Key
+                
+                <input id="@source.Key" @bind="model.Sources[source.Key]" size="80" />
+                
+            </label>
+        </p>
+    }
 
     <button type="submit" class="btn btn-primary btn-rounded"><i class="bi-save"></i>&nbsp; Save</button>
 </EditForm>
