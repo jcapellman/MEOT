@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace MEOT.Web
+namespace MEOT.web
 {
     public class Program
     {
