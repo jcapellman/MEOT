@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using MEOT.lib.DAL.Base;
@@ -43,6 +44,8 @@ namespace MEOT.lib.DAL
 
             var collection = db.GetCollection<T>();
 
+            item.Modified = DateTimeOffset.Now;
+            
             collection.Update(item);
         }
 
