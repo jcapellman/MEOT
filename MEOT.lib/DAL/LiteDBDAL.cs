@@ -27,5 +27,14 @@ namespace MEOT.lib.DAL
 
             return collection.FindAll().ToList();
         }
+
+        public void Delete<T>(T item) where T : BaseObject
+        {
+            using var db = new LiteDB.LiteDatabase(DB_NAME);
+
+            var collection = db.GetCollection<T>();
+
+            collection.Delete(item.Id);
+        }
     }
 }
