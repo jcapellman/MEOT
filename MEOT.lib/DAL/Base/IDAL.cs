@@ -9,5 +9,7 @@ namespace MEOT.lib.DAL.Base
         void Insert<T>(T item) where T: BaseObject;
 
         public List<T> SelectAll<T>() where T : BaseObject;
+
+        void Delete<T>(T item) where T : BaseObject;
     }
 }
