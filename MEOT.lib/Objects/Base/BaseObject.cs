@@ -7,5 +7,10 @@ namespace MEOT.lib.Objects.Base
         public int Id { get; set; }
 
         public DateTimeOffset Created { get; set; }
+
+        public BaseObject()
+        {
+            Created = DateTimeOffset.Now;
+        }
     }
 }
