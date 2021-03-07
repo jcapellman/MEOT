@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using MEOT.lib.DAL.Base;
+using MEOT.lib.Managers;
 using MEOT.lib.Objects;
 
 namespace MEOT.worker
@@ -18,6 +19,8 @@ namespace MEOT.worker
 
         private IDAL _db;
 
+        private SourceManager _sourceManager;
+
         public Worker(ILogger<Worker> logger, IDAL db)
         {
             _logger = logger;
@@ -25,6 +28,8 @@ namespace MEOT.worker
             _db = db;
 
             _settings = _db.SelectFirstOrDefault<Settings>();
+
+            _sourceManager = new SourceManager(_settings);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -35,6 +40,8 @@ namespace MEOT.worker
 
                 foreach (var item in malware)
                 {
+                    var sourceResult = _sourceManager.CheckSources(item.SHA1);
+
                     // TODO: Iterate through sources and create MalwareCheckpoints
                     // TODO: Update the root malware object
                 }
