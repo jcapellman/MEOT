@@ -8,9 +8,13 @@ namespace MEOT.lib.Objects.Base
 
         public DateTimeOffset Created { get; set; }
 
+        public DateTimeOffset Modified { get; set; }
+
         public BaseObject()
         {
             Created = DateTimeOffset.Now;
+
+            Modified = DateTimeOffset.Now;
         }
     }
 }
