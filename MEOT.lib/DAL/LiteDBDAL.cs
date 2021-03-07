@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 using MEOT.lib.DAL.Base;
 using MEOT.lib.Objects.Base;
@@ -9,14 +10,22 @@ namespace MEOT.lib.DAL
     {
         private const string DB_NAME = "meot_litedb.db";
 
-        public void InsertAsync(BaseObject item)
+        public void Insert<T>(T item) where T: BaseObject
         {
-            
+            using var db = new LiteDB.LiteDatabase(DB_NAME);
+
+            var collection = db.GetCollection<T>();
+
+            collection.Insert(item);
         }
 
-        public List<BaseObject> SelectAll<T>() where T : BaseObject
+        public List<T> SelectAll<T>() where T : BaseObject
         {
-            return null;
+            using var db = new LiteDB.LiteDatabase(DB_NAME);
+
+            var collection = db.GetCollection<T>();
+
+            return collection.FindAll().ToList();
         }
     }
 }
