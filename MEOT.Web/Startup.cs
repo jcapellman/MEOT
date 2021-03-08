@@ -33,8 +33,10 @@ namespace MEOT.web
 
             new SettingsManager(db).UpdateSources(sourceManager.SourceNames);
 
+
             services.AddSingleton<IDAL>(db); // Using LiteDB
             services.AddSingleton(sourceManager);
+            services.AddSingleton(new MalwareManager(db));
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
