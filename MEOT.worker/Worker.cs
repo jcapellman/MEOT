@@ -109,6 +109,8 @@ namespace MEOT.worker
                             {
                                 vendorCheckpoint.HoursToDetection =
                                     Math.Round(DateTimeOffset.Now.Subtract(item.DayZero).TotalHours, 0);
+
+                                vendorCheckpoint.DetectionDate = DateTimeOffset.Now;
                             }
                             
                             if (newItem)
