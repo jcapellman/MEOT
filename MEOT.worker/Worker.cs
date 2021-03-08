@@ -1,10 +1,12 @@
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+
+using MEOT.lib.DAL;
 using MEOT.lib.DAL.Base;
 using MEOT.lib.Managers;
 using MEOT.lib.Objects;
@@ -21,15 +23,19 @@ namespace MEOT.worker
 
         private readonly SourceManager _sourceManager;
 
-        public Worker(ILogger<Worker> logger, IDAL db)
+        public Worker(ILogger<Worker> logger)
         {
             _logger = logger;
 
-            _db = db;
+            _db = new LiteDBDAL();
 
             _settings = _db.SelectFirstOrDefault<Settings>();
 
             _sourceManager = new SourceManager(_settings);
+
+            new SettingsManager(_db).UpdateSources(_sourceManager.SourceNames);
+
+            _settings = _db.SelectFirstOrDefault<Settings>();
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -61,6 +67,17 @@ namespace MEOT.worker
                         _db.Insert(checkpoint);
 
                         item.NumDetections += checkpoint.Detections;
+
+                        foreach (var vendorCheckpoint in from vendor in result.Keys select new MalwareVendorCheckpoint
+                        {
+                            MalwareId = item.Id,
+                            HoursToDetection = DateTimeOffset.Now.Subtract(item.DayZero).TotalHours,
+                            VendorName = vendor,
+                            Detected = result[vendor]
+                        })
+                        {
+                            _db.Insert(vendorCheckpoint);
+                        }
                     }
                     
                     _db.Update(item);
