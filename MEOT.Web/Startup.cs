@@ -31,12 +31,14 @@ namespace MEOT.web
 
             var sourceManager = new SourceManager(settings);
 
-            new SettingsManager(db).UpdateSources(sourceManager.SourceNames);
+            var settingsManager = new SettingsManager(db);
 
+            settingsManager.UpdateSources(sourceManager.SourceNames);
 
             services.AddSingleton<IDAL>(db); // Using LiteDB
             services.AddSingleton(sourceManager);
             services.AddSingleton(new MalwareManager(db));
+            services.AddSingleton(settingsManager);
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
