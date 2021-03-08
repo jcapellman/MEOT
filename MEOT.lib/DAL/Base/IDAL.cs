@@ -12,6 +12,8 @@ namespace MEOT.lib.DAL.Base
 
         void Delete<T>(T item) where T : BaseObject;
 
+        void DeleteById<T>(int id) where T : BaseObject;
+
         void Update<T>(T item) where T : BaseObject;
 
         T SelectOne<T>(int id) where T : BaseObject;
