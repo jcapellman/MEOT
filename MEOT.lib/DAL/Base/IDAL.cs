@@ -21,6 +21,8 @@ namespace MEOT.lib.DAL.Base
 
         T SelectOne<T>(int id) where T : BaseObject;
 
+        T SelectOne<T>(System.Linq.Expressions.Expression<Func<T, bool>> expression) where T : BaseObject;
+        
         T SelectFirstOrDefault<T>() where T : BaseObject;
     }
 }
