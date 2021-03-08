@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 
@@ -22,20 +24,27 @@ namespace MEOT.lib.Sources
 
         public override Dictionary<string, bool> QueryHash(string sha1)
         {
-            using var httpClient = new HttpClient();
+            try
+            {
+                using var httpClient = new HttpClient();
 
-            var json = httpClient
-                .GetStringAsync(
-                    $"https://www.virustotal.com/vtapi/v2/file/report?apikey={_vtKey}&resource={sha1}").Result;
+                var json = httpClient
+                    .GetStringAsync(
+                        $"https://www.virustotal.com/vtapi/v2/file/report?apikey={_vtKey}&resource={sha1}").Result;
 
 
-            var fileReport = JsonSerializer.Deserialize<VTFileReport>(json);
+                var fileReport = JsonSerializer.Deserialize<VTFileReport>(json);
 
-            var vendorAnalysis = new Dictionary<string, bool>();
+                return fileReport == null
+                    ? new Dictionary<string, bool>()
+                    : fileReport.scans.ToDictionary(vendor => vendor.Key, vendor => vendor.Value.detected);
+            }
+            catch (Exception ex)
+            {
+                // TODO: Logging
 
-            // TODO: Parse JSON
-
-            return vendorAnalysis;
+                return new Dictionary<string, bool>();
+            }
         }
     }
 }
