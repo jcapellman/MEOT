@@ -1,9 +1,9 @@
 ﻿@page "/"
 
-@using MEOT.lib.DAL.Base
+@using MEOT.lib.Managers
 @using MEOT.lib.Objects
 
-@inject IDAL db
+@inject MalwareManager malwareManager
 @inject NavigationManager NavManager
 
 <h1>Malware Efficacy Over Time</h1>
@@ -58,6 +58,6 @@ else if (!malware.Any())
 
     protected override async Task OnInitializedAsync()
     {
-        malware = db.SelectAll<Malware>().Where(a => a.Enabled).ToList();
+        malware = malwareManager.GetDashboardEnabled();
     }
 }
