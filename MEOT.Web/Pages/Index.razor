@@ -25,7 +25,7 @@ else if (!malware.Any())
             <th>SHA1</th>
             <th>Format</th>
             <th>Detections</th>
-            <th>Days Old</th>
+            <th>Day 0</th>
             
             <th>Actions</th>
         </tr>
@@ -38,7 +38,7 @@ else if (!malware.Any())
                 <td>@item.SHA1></td>
                 <td>@item.Format</td>
                 <td>@item.NumDetections</td>
-                <td>@item.DaysOld</td>
+                <td>@item.DayZero</td>
                 <td>
                     <button class="btn btn-rounded" @onclick="() => ViewDetail(item)" title="View"><i class="bi-files"></i></button>
                 </td>
@@ -53,7 +53,7 @@ else if (!malware.Any())
 
     protected void ViewDetail(Malware item)
     {
-        NavManager.NavigateTo($"MalwareAnalysis/{item.Id}");
+        NavManager.NavigateTo($"/MalwareAnalysis/{item.Id}");
     }
 
     protected override async Task OnInitializedAsync()
