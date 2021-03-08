@@ -25,7 +25,7 @@ namespace MEOT.web
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            var db = new LiteDBDAL();
+            var db = new LiteDBDAL();   // Swap out this line if another database is preferred
 
             var settings = db.SelectFirstOrDefault<Settings>();
 
@@ -34,8 +34,7 @@ namespace MEOT.web
             var settingsManager = new SettingsManager(db);
 
             settingsManager.UpdateSources(sourceManager.SourceNames);
-
-            services.AddSingleton<IDAL>(db); // Using LiteDB
+            
             services.AddSingleton(sourceManager);
             services.AddSingleton(new MalwareManager(db));
             services.AddSingleton(settingsManager);
