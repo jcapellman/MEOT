@@ -38,6 +38,7 @@ namespace MEOT.web
             services.AddSingleton(sourceManager);
             services.AddSingleton(new MalwareManager(db));
             services.AddSingleton(settingsManager);
+            services.AddSingleton(new TrendingAnalysisManager(db));
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
