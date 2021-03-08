@@ -7,3 +7,5 @@ typings/
 /Properties/PublishProfiles
 *.user
 *.db
+Debug/
+Release/
