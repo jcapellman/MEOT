@@ -1,9 +1,9 @@
 ﻿@page "/Settings"
 
-@using MEOT.lib.DAL.Base
+@using MEOT.lib.Managers
 @using MEOT.lib.Objects
 
-@inject IDAL db
+@inject SettingsManager settingManager
 
 <h1>Settings</h1>
 
@@ -37,32 +37,14 @@
 
 @code {
     private Settings model = new Settings();
-
-    private bool IsNew = false;
-
+    
     protected override void OnInitialized()
     {
-        model = db.SelectFirstOrDefault<Settings>();
-
-        if (model != null)
-        {
-            return;
-        }
-
-        model = new Settings();
-
-        IsNew = true;
+        model = settingManager.GetSettings();
     }
 
     private void HandleValidSubmit()
     {
-        if (IsNew)
-        {
-            db.Insert(model);
-        }
-        else
-        {
-            db.Update(model);
-        }
+        settingManager.SaveSettings(model);
     }
 }
