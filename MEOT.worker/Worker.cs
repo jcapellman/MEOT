@@ -52,11 +52,20 @@ namespace MEOT.worker
 
                     foreach (var source in sourceResult)
                     {
-                        var checkpoint = new MalwareCheckpoint
+                        var newCheckpoint = false;
+
+                        var checkpoint = _db.SelectOne<MalwareCheckpoint>(a => a.MalwareId == item.Id);
+
+                        if (checkpoint == null)
                         {
-                            MalwareId = item.Id, 
-                            SourceName = source.Key
-                        };
+                            newCheckpoint = true;
+
+                            checkpoint = new MalwareCheckpoint
+                            {
+                                MalwareId = item.Id,
+                                SourceName = source.Key
+                            };
+                        }
                         
                         var result = source.Value;
 
@@ -64,19 +73,52 @@ namespace MEOT.worker
                         checkpoint.Detections = result.Values.Count(a => a);
                         checkpoint.Vendors = result.Keys.Count;
 
-                        _db.Insert(checkpoint);
+                        if (newCheckpoint)
+                        {
+                            _db.Insert(checkpoint);
+                        }
+                        else
+                        {
+                            _db.Update(checkpoint);
+                        }
 
                         item.NumDetections += checkpoint.Detections;
 
-                        foreach (var vendorCheckpoint in from vendor in result.Keys select new MalwareVendorCheckpoint
+                        foreach (var vendor in result.Keys)
                         {
-                            MalwareId = item.Id,
-                            HoursToDetection = Math.Round(DateTimeOffset.Now.Subtract(item.DayZero).TotalHours, 0),
-                            VendorName = vendor,
-                            Detected = result[vendor]
-                        })
-                        {
-                            _db.Insert(vendorCheckpoint);
+                            var newItem = false;
+
+                            var vendorCheckpoint =
+                                _db.SelectOne<MalwareVendorCheckpoint>(a =>
+                                    a.MalwareId == item.Id && a.VendorName == vendor);
+
+                            if (vendorCheckpoint == null)
+                            {
+                                newItem = true;
+                            
+                                vendorCheckpoint = new MalwareVendorCheckpoint
+                                {
+                                    MalwareId = item.Id,
+                                    VendorName = vendor
+                                };
+                            }
+
+                            vendorCheckpoint.Detected = result[vendor];
+                            
+                            if (vendorCheckpoint.Detected)
+                            {
+                                vendorCheckpoint.HoursToDetection =
+                                    Math.Round(DateTimeOffset.Now.Subtract(item.DayZero).TotalHours, 0);
+                            }
+                            
+                            if (newItem)
+                            {
+                                _db.Insert(vendorCheckpoint);
+                            }
+                            else
+                            {
+                                _db.Update(vendorCheckpoint);
+                            }
                         }
                     }
                     
