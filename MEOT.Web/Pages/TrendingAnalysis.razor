@@ -1,0 +1,65 @@
+﻿@page "/TrendingAnalysis"
+
+@using MEOT.lib.Managers
+@using MEOT.lib.Containers
+
+@inject TrendingAnalysisManager trendingAnalysisManager
+
+<h1>Trending Analysis</h1>
+
+@if (topVendors == null || worstVendors == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <h2>Top Vendors (Based on Quickest Detections)</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Hours to Detection</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in topVendors)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.HoursToDetection</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <h2>Worst Vendors (Based on Slowest Detections)</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Hours to Detection</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in worstVendors)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.HoursToDetection</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<VendorAnalysis> topVendors;
+
+    private List<VendorAnalysis> worstVendors;
+
+    protected override async Task OnInitializedAsync()
+    {
+        topVendors = trendingAnalysisManager.GetTopVendorsFromDuration();
+        worstVendors = trendingAnalysisManager.GetWorstVendorsFromDuration();
+    }
+}
