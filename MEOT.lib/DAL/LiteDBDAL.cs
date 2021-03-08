@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 using MEOT.lib.DAL.Base;
 using MEOT.lib.Objects.Base;
@@ -74,6 +75,15 @@ namespace MEOT.lib.DAL
             var collection = db.GetCollection<T>();
 
             return collection.FindById(id);
+        }
+
+        public T SelectOne<T>(Expression<Func<T, bool>> expression) where T : BaseObject
+        {
+            using var db = new LiteDB.LiteDatabase(DB_NAME);
+
+            var collection = db.GetCollection<T>();
+
+            return collection.FindOne(expression);
         }
 
         public T SelectFirstOrDefault<T>() where T : BaseObject
