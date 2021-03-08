@@ -15,6 +15,23 @@ namespace MEOT.lib.Managers
             _db = db;
         }
 
+        public void SaveSettings(Settings setting)
+        {
+            _db.Update(setting);
+        }
+
+        public Settings GetSettings()
+        {
+            var settings = _db.SelectFirstOrDefault<Settings>();
+
+            if (settings == null)
+            {
+                _db.Insert(new Settings());
+            }
+
+            return _db.SelectFirstOrDefault<Settings>();
+        }
+
         public void UpdateSources(List<string> sources)
         {
             var isNew = false;
