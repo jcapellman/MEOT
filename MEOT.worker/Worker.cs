@@ -71,7 +71,7 @@ namespace MEOT.worker
                         foreach (var vendorCheckpoint in from vendor in result.Keys select new MalwareVendorCheckpoint
                         {
                             MalwareId = item.Id,
-                            HoursToDetection = DateTimeOffset.Now.Subtract(item.DayZero).TotalHours,
+                            HoursToDetection = Math.Round(DateTimeOffset.Now.Subtract(item.DayZero).TotalHours, 0),
                             VendorName = vendor,
                             Detected = result[vendor]
                         })
