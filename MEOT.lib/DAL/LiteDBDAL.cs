@@ -38,6 +38,15 @@ namespace MEOT.lib.DAL
             collection.Delete(item.Id);
         }
 
+        public void DeleteWhere<T>(System.Linq.Expressions.Expression<Func<T, bool>> expression) where T : BaseObject
+        {
+            using var db = new LiteDB.LiteDatabase(DB_NAME);
+
+            var collection = db.GetCollection<T>();
+
+            collection.DeleteMany(expression);
+        }
+
         public void DeleteById<T>(int id) where T : BaseObject
         {
             using var db = new LiteDB.LiteDatabase(DB_NAME);
