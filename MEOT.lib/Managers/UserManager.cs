@@ -15,5 +15,17 @@ namespace MEOT.lib.Managers
         }
 
         public List<User> GetUsers() => _db.SelectAll<User>();
+
+        public void CreateOrUpdate(User user, bool create)
+        {
+            if (create)
+            {
+                _db.Insert(user);
+            }
+            else
+            {
+                _db.Update(user);
+            }
+        }
     }
 }
