@@ -16,8 +16,18 @@ namespace MEOT.lib.Managers
 
         public List<User> GetUsers() => _db.SelectAll<User>();
 
-        public void CreateOrUpdate(User user, bool create)
+        public string CreateOrUpdate(User user, bool create)
         {
+            var existingUser = _db.SelectOne<User>(a => a.EmailAddress == user.EmailAddress);
+
+            if (existingUser != null)
+            {
+                if (create || user.Id != existingUser.Id)
+                {
+                    return "Email Address is already in use";
+                }
+            }
+
             if (create)
             {
                 _db.Insert(user);
@@ -26,6 +36,8 @@ namespace MEOT.lib.Managers
             {
                 _db.Update(user);
             }
+
+            return string.Empty;
         }
 
         public User GetUserById(int id) => _db.SelectOne<User>(id);
