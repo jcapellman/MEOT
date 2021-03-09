@@ -1,0 +1,15 @@
+﻿@page "/Logout"
+
+@using MEOT.lib.Managers
+
+@inject UserManager userManager
+@inject NavigationManager NavManager
+
+@code {
+    protected override void OnInitialized()
+    {
+        userManager.Logout();
+
+        NavManager.NavigateTo("/");
+    }
+}
