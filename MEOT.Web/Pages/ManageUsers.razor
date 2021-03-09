@@ -55,7 +55,7 @@ else
 
     protected void DeleteUser(User user)
     {
-     //   malManager.DeleteMalware(item.Id);
+        userManager.DeleteUserById(user.Id);
 
         users = userManager.GetUsers();
     }
