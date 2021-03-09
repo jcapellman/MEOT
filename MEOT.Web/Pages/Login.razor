@@ -1,0 +1,55 @@
+﻿@page "/"
+
+@using MEOT.lib.Managers
+@using MEOT.lib.Objects
+
+@inject UserManager userManager
+@inject NavigationManager NavManager
+
+<h3>Login</h3>
+
+<EditForm Model="@model" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    
+    @if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <div class="alert alert-danger">
+            @ErrorMessage
+        </div>
+    }
+
+    <p>
+        <label>
+            Email Address
+        
+            <InputText id="emailaddress" type="email" @bind-Value="model.EmailAddress" />
+        </label>
+    </p>
+    
+    <p>
+        <label>
+            Password
+        
+            <InputText id="password" type="password" @bind-Value="model.Password" />
+        </label>
+    </p>
+    
+    <button type="submit" class="btn btn-primary btn-rounded"><i class="bi-box-arrow-right"></i>&nbsp; Login</button>
+</EditForm>
+
+@code {
+    private User model = new User();
+
+    private string ErrorMessage { get; set; }
+
+    private void HandleValidSubmit()
+    {
+        ErrorMessage = userManager.AttemptLogin(model);
+
+        if (string.IsNullOrEmpty(ErrorMessage))
+        {
+            NavManager.NavigateTo("/Dashboard");
+        }
+    }
+}
