@@ -2,41 +2,47 @@
 
 @using MEOT.lib.Managers
 @using MEOT.lib.Objects
+@using MEOT.web.Providers
 
 @inject UserManager userManager
 @inject NavigationManager NavManager
+@inject CustomAuthProvider authProvider
 
-<h3>Login</h3>
+<div class="col-lg-4 col-md-4 col-sm-4 container justify-content-center">
+    <div class="jumbotron my-auto">
+        <h3>MEOT Login</h3>
 
-<EditForm Model="@model" OnValidSubmit="@HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+        <EditForm Model="@model" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
     
-    @if (!string.IsNullOrEmpty(ErrorMessage))
-    {
-        <div class="alert alert-danger">
-            @ErrorMessage
-        </div>
-    }
+            @if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                <div class="alert alert-danger">
+                    @ErrorMessage
+                </div>
+            }
 
-    <p>
-        <label>
-            Email Address
+            <p>
+                <label>
+                    Email Address<br/>
         
-            <InputText id="emailaddress" type="email" @bind-Value="model.EmailAddress" />
-        </label>
-    </p>
+                    <InputText id="emailaddress" type="email" @bind-Value="model.EmailAddress" />
+                </label>
+            </p>
     
-    <p>
-        <label>
-            Password
+            <p>
+                <label>
+                    Password<br/>
         
-            <InputText id="password" type="password" @bind-Value="model.Password" />
-        </label>
-    </p>
+                    <InputText id="password" type="password" @bind-Value="model.Password" />
+                </label>
+            </p>
     
-    <button type="submit" class="btn btn-primary btn-rounded"><i class="bi-box-arrow-right"></i>&nbsp; Login</button>
-</EditForm>
+            <button type="submit" class="btn btn-primary btn-rounded"><i class="bi-box-arrow-right"></i>&nbsp; Login</button>
+        </EditForm>
+    </div>
+</div>
 
 @code {
     private User model = new User();
@@ -49,6 +55,8 @@
 
         if (string.IsNullOrEmpty(ErrorMessage))
         {
+            CustomAuthProvider.IsAuthenticated = true;
+
             NavManager.NavigateTo("/Dashboard");
         }
     }
