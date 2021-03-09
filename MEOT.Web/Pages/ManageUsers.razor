@@ -8,7 +8,7 @@
 
 <h1>Users</h1>
 
-<button @onclick="AddUser" class="btn btn-primary btn-rounded"><i class="bi-file-plus"></i>&nbsp; New User</button>
+<button @onclick="AddUser" class="btn btn-primary btn-rounded"><i class="bi-person-plus"></i>&nbsp; New User</button>
 
 <br/>
 
@@ -31,7 +31,7 @@ else
             @foreach (var user in users)
             {
                 <tr>
-                    <td>@user.Modified></td>
+                    <td>@user.Modified</td>
                     <td>@user.EmailAddress</td>
                     <td>@user.Role</td>
                     <td>
