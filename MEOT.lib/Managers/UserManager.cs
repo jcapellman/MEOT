@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 
+using MEOT.lib.Common;
 using MEOT.lib.DAL.Base;
 using MEOT.lib.Objects;
 
@@ -28,6 +29,8 @@ namespace MEOT.lib.Managers
                 }
             }
 
+            user.Password = user.Password.ToSHA256();
+
             if (create)
             {
                 _db.Insert(user);
@@ -43,5 +46,17 @@ namespace MEOT.lib.Managers
         public User GetUserById(int id) => _db.SelectOne<User>(id);
 
         public void DeleteUserById(int id) => _db.DeleteById<User>(id);
+
+        public string AttemptLogin(User user)
+        {
+            var hashedPassword = user.Password.ToSHA256();
+
+            if (_db.SelectOne<User>(a => a.EmailAddress == user.EmailAddress && a.Password == hashedPassword) == null)
+            {
+                return "Invalid username and or password";
+            }
+
+            return string.Empty;
+        }
     }
 }
