@@ -29,5 +29,7 @@ namespace MEOT.lib.Managers
         }
 
         public User GetUserById(int id) => _db.SelectOne<User>(id);
+
+        public void DeleteUserById(int id) => _db.DeleteById<User>(id);
     }
 }
