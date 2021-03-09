@@ -27,5 +27,7 @@ namespace MEOT.lib.Managers
                 _db.Update(user);
             }
         }
+
+        public User GetUserById(int id) => _db.SelectOne<User>(id);
     }
 }
