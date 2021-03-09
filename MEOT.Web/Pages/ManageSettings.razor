@@ -19,6 +19,40 @@
         </label>
     </p>
     
+    <h3>SMTP Settings</h3>
+    
+    <p>
+        <label>
+            SMTP Server Address
+        
+            <InputText id="smtpserver" @bind-Value="model.SMTPAddress" />
+        </label>
+    </p>
+    
+    <p>
+        <label>
+            SMTP Server Port
+        
+            <InputNumber id="smtpport" @bind-Value="model.SMTPPort" />
+        </label>
+    </p>
+    
+    <p>
+        <label>
+            SMTP Server Username
+        
+            <InputText id="smtpuser" @bind-Value="model.SMTPUser" />
+        </label>
+    </p>
+    
+    <p>
+        <label>
+            SMTP Server Password
+        
+            <InputText id="smtppassword" @bind-Value="model.SMTPPassword" />
+        </label>
+    </p>
+
     <h3>Source License Keys</h3>
     @foreach (var source in model.Sources)
     {
