@@ -2,7 +2,6 @@ using MEOT.lib.DAL;
 using MEOT.lib.DAL.Base;
 using MEOT.lib.Managers;
 using MEOT.lib.Objects;
-using MEOT.web.Providers;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -44,8 +43,6 @@ namespace MEOT.web
             services.AddSingleton(new UserManager(db));
 
             services.AddAuthorizationCore();
-            services.AddScoped<CustomAuthProvider>();
-            services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<CustomAuthProvider>());
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
