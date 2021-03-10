@@ -1,0 +1,64 @@
+﻿@page "/Vendor/{vendorName}"
+
+@inject MalwareManager malwareManager
+
+@using MEOT.lib.Containers
+@using MEOT.lib.Managers
+
+<h1>@vendorName Analysis</h1>
+
+<h2>Overview</h2>
+<p>
+    <label>
+        <strong>Average Hours To Detection</strong><br/>
+        @vendorData.AverageTimeToDetect
+    </label>
+</p>
+
+<p>
+    <label>
+        <strong>Number of Detections / Number of Opportunities</strong><br/>
+        @vendorData.NumDetections / @vendorData.NumAttempts
+    </label>
+</p>
+
+<h2>Detailed View</h2>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Vendor Name</th>
+        <th>Detected</th>
+        <th>Hours to Classification</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in vendorData.DetailedAnalysis)
+    {
+        <tr>
+            <td><a href="/MalwareAnalysis/@item.MalwareId">@item.MalwareName</a></td>
+            <td>@item.Detected</td>
+            @if (item.HoursToDetect.HasValue)
+            {
+               <td>@item.HoursToDetect.Value</td>
+            }
+            else
+            {
+               <td></td>
+            }
+        </tr>
+    }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public string vendorName { get; set; }
+
+    private VendorContainer vendorData { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        vendorData = malwareManager.GetVendorData(vendorName);
+    }
+}
