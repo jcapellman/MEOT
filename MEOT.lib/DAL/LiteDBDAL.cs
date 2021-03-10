@@ -30,6 +30,15 @@ namespace MEOT.lib.DAL
             return collection.FindAll().ToList();
         }
 
+        public List<T> SelectAll<T>(Expression<Func<T, bool>> expression) where T : BaseObject
+        {
+            using var db = new LiteDB.LiteDatabase(DB_NAME);
+
+            var collection = db.GetCollection<T>();
+
+            return collection.Find(expression).ToList();
+        }
+
         public void Delete<T>(T item) where T : BaseObject
         {
             using var db = new LiteDB.LiteDatabase(DB_NAME);
