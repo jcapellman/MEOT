@@ -15,7 +15,7 @@ namespace MEOT.web
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>()
-                    .UseUrls("http://0.0.0.0:5009");
+                    .UseUrls("http://0.0.0.0:5009", "https://0.0.0.0:5010");
                 });
     }
 }
