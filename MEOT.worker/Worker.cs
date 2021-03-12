@@ -66,7 +66,7 @@ namespace MEOT.worker
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     var malware = _db.SelectAll<Malware>().Where(a => a.Enabled);
-
+                    
                     foreach (var item in malware)
                     {
                         Console.WriteLine($"Checking {item.SHA1}...");
@@ -153,7 +153,7 @@ namespace MEOT.worker
                     }
 
                     // Wait the interval
-                    await Task.Delay(_settings.HoursBetweenChecks * 60 * 60 * 1000, stoppingToken);
+                    Thread.Sleep(_settings.HoursBetweenChecks * 60 * 60 * 1000);
                 }
             }
             catch (Exception ex)
