@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,6 +34,13 @@ namespace MEOT.worker
 
             Console.WriteLine($"DB Path: {dbPath}");
 
+            if (!File.Exists(dbPath))
+            {
+                Console.WriteLine("DB not found - exiting");
+
+                return;
+            }
+
             _db = new LiteDBDAL(dbPath);
             
             _settings = _db.SelectOne<Settings>(a => a != null);
@@ -46,97 +54,104 @@ namespace MEOT.worker
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            while (!stoppingToken.IsCancellationRequested)
+            try
             {
-                var malware = _db.SelectAll<Malware>().Where(a => a.Enabled);
-
-                foreach (var item in malware)
+                while (!stoppingToken.IsCancellationRequested)
                 {
-                    Console.WriteLine($"Checking {item.SHA1}...");
+                    var malware = _db.SelectAll<Malware>().Where(a => a.Enabled);
 
-                    var sourceResult = _sourceManager.CheckSources(item.SHA1);
-
-                    item.NumDetections = 0;
-
-                    foreach (var source in sourceResult)
+                    foreach (var item in malware)
                     {
-                        var newCheckpoint = false;
+                        Console.WriteLine($"Checking {item.SHA1}...");
 
-                        var checkpoint = _db.SelectOne<MalwareCheckpoint>(a => a.MalwareId == item.Id);
+                        var sourceResult = _sourceManager.CheckSources(item.SHA1);
 
-                        if (checkpoint == null)
+                        item.NumDetections = 0;
+
+                        foreach (var source in sourceResult)
                         {
-                            newCheckpoint = true;
+                            var newCheckpoint = false;
 
-                            checkpoint = new MalwareCheckpoint
+                            var checkpoint = _db.SelectOne<MalwareCheckpoint>(a => a.MalwareId == item.Id);
+
+                            if (checkpoint == null)
                             {
-                                MalwareId = item.Id,
-                                SourceName = source.Key
-                            };
-                        }
-                        
-                        var result = source.Value;
+                                newCheckpoint = true;
 
-                        checkpoint.Payload = System.Text.Json.JsonSerializer.Serialize(result);
-                        checkpoint.Detections = result.Values.Count(a => a);
-                        checkpoint.Vendors = result.Keys.Count;
-
-                        if (newCheckpoint)
-                        {
-                            _db.Insert(checkpoint);
-                        }
-                        else
-                        {
-                            _db.Update(checkpoint);
-                        }
-
-                        item.NumDetections += checkpoint.Detections;
-
-                        foreach (var vendor in result.Keys)
-                        {
-                            var newItem = false;
-
-                            var vendorCheckpoint =
-                                _db.SelectOne<MalwareVendorCheckpoint>(a =>
-                                    a.MalwareId == item.Id && a.VendorName == vendor);
-
-                            if (vendorCheckpoint == null)
-                            {
-                                newItem = true;
-                            
-                                vendorCheckpoint = new MalwareVendorCheckpoint
+                                checkpoint = new MalwareCheckpoint
                                 {
                                     MalwareId = item.Id,
-                                    VendorName = vendor
+                                    SourceName = source.Key
                                 };
                             }
 
-                            vendorCheckpoint.Detected = result[vendor];
-                            
-                            if (vendorCheckpoint.Detected)
-                            {
-                                vendorCheckpoint.HoursToDetection =
-                                    Math.Round(DateTimeOffset.Now.Subtract(item.DayZero).TotalHours, 0);
+                            var result = source.Value;
 
-                                vendorCheckpoint.DetectionDate = DateTimeOffset.Now;
-                            }
-                            
-                            if (newItem)
+                            checkpoint.Payload = System.Text.Json.JsonSerializer.Serialize(result);
+                            checkpoint.Detections = result.Values.Count(a => a);
+                            checkpoint.Vendors = result.Keys.Count;
+
+                            if (newCheckpoint)
                             {
-                                _db.Insert(vendorCheckpoint);
+                                _db.Insert(checkpoint);
                             }
                             else
                             {
-                                _db.Update(vendorCheckpoint);
+                                _db.Update(checkpoint);
+                            }
+
+                            item.NumDetections += checkpoint.Detections;
+
+                            foreach (var vendor in result.Keys)
+                            {
+                                var newItem = false;
+
+                                var vendorCheckpoint =
+                                    _db.SelectOne<MalwareVendorCheckpoint>(a =>
+                                        a.MalwareId == item.Id && a.VendorName == vendor);
+
+                                if (vendorCheckpoint == null)
+                                {
+                                    newItem = true;
+
+                                    vendorCheckpoint = new MalwareVendorCheckpoint
+                                    {
+                                        MalwareId = item.Id,
+                                        VendorName = vendor
+                                    };
+                                }
+
+                                vendorCheckpoint.Detected = result[vendor];
+
+                                if (vendorCheckpoint.Detected)
+                                {
+                                    vendorCheckpoint.HoursToDetection =
+                                        Math.Round(DateTimeOffset.Now.Subtract(item.DayZero).TotalHours, 0);
+
+                                    vendorCheckpoint.DetectionDate = DateTimeOffset.Now;
+                                }
+
+                                if (newItem)
+                                {
+                                    _db.Insert(vendorCheckpoint);
+                                }
+                                else
+                                {
+                                    _db.Update(vendorCheckpoint);
+                                }
                             }
                         }
+
+                        _db.Update(item);
                     }
-                    
-                    _db.Update(item);
+
+                    // Wait the interval
+                    await Task.Delay(_settings.HoursBetweenChecks * 60 * 60 * 1000, stoppingToken);
                 }
-                
-                // Wait the interval
-                await Task.Delay(_settings.HoursBetweenChecks * 60 * 60 * 1000, stoppingToken);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
             }
         }
     }
