@@ -26,30 +26,37 @@ namespace MEOT.worker
 
         public Worker(ILogger<Worker> logger)
         {
-            var args = Environment.GetCommandLineArgs();
-            
-            _logger = logger;
-
-            var dbPath = args.Length == 2 ? args[1] : null;
-
-            Console.WriteLine($"DB Path: {dbPath}");
-
-            if (!File.Exists(dbPath))
+            try
             {
-                Console.WriteLine("DB not found - exiting");
+                var args = Environment.GetCommandLineArgs();
 
-                return;
+                _logger = logger;
+
+                var dbPath = args.Length == 2 ? args[1] : null;
+
+                Console.WriteLine($"DB Path: {dbPath}");
+
+                if (!File.Exists(dbPath))
+                {
+                    Console.WriteLine("DB not found - exiting");
+
+                    return;
+                }
+
+                _db = new LiteDBDAL(dbPath);
+
+                _settings = _db.SelectOne<Settings>(a => a != null);
+
+                _sourceManager = new SourceManager(_settings);
+
+                new SettingsManager(_db).UpdateSources(_sourceManager.SourceNames);
+
+                _settings = _db.SelectOne<Settings>(a => a != null);
             }
-
-            _db = new LiteDBDAL(dbPath);
-            
-            _settings = _db.SelectOne<Settings>(a => a != null);
-
-            _sourceManager = new SourceManager(_settings);
-
-            new SettingsManager(_db).UpdateSources(_sourceManager.SourceNames);
-
-            _settings = _db.SelectOne<Settings>(a => a != null);
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
