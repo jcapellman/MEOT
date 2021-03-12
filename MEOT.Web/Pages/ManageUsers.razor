@@ -3,6 +3,8 @@
 @using MEOT.lib.Managers
 @using MEOT.lib.Objects
 
+@inherits BaseRazorPage
+
 @inject UserManager userManager
 @inject NavigationManager NavManager
 
@@ -65,8 +67,15 @@ else
         NavManager.NavigateTo($"/AddEditUser/{user.Id}");
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
+        if (!IsAuthenticated)
+        {
+            RedirectHome(NavManager);
+
+            return;
+        }
+
         users = userManager.GetUsers();
     }
 }

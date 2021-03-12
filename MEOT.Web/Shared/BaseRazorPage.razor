@@ -25,4 +25,9 @@
     protected async Task LoginAsync(User user) {
          await LocalStorage.SetItemAsync(Key, user);
     }
+
+    protected void RedirectHome(NavigationManager navManager)
+    {
+        navManager.NavigateTo("/");
+    }
 }

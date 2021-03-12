@@ -8,6 +8,8 @@
 @inject UserManager userManager
 @inject NavigationManager NavManager
 
+@inherits BaseRazorPage
+
 @if (!IsNew)
 {
     <h1>Edit User</h1>
@@ -79,6 +81,13 @@ else
 
     protected override void OnInitialized()
     {
+        if (!IsAuthenticated)
+        {
+            RedirectHome(NavManager);
+
+            return;
+        }
+
         IsNew = string.IsNullOrEmpty(id);
 
         if (IsNew)

@@ -1,11 +1,9 @@
 using Blazored.LocalStorage;
 using MEOT.lib.DAL;
-using MEOT.lib.DAL.Base;
 using MEOT.lib.Managers;
 using MEOT.lib.Objects;
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
@@ -70,10 +68,7 @@ namespace MEOT.web
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();
