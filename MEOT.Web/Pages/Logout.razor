@@ -1,14 +1,13 @@
 ﻿@page "/Logout"
 
-@using MEOT.lib.Managers
+@inherits BaseRazorPage
 
-@inject UserManager userManager
 @inject NavigationManager NavManager
 
 @code {
     protected override void OnInitialized()
     {
-        userManager.Logout();
+        Logout();
 
         NavManager.NavigateTo("/");
     }

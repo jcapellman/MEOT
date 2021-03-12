@@ -58,10 +58,5 @@ namespace MEOT.lib.Managers
 
             return string.Empty;
         }
-
-        public void Logout()
-        {
-            // TODO: Remove cookies
-        }
     }
 }

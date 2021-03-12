@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using MEOT.lib.DAL;
 using MEOT.lib.DAL.Base;
 using MEOT.lib.Managers;
@@ -24,6 +25,8 @@ namespace MEOT.web
         
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddBlazoredLocalStorage();
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
 

@@ -6,6 +6,8 @@
 @inject UserManager userManager
 @inject NavigationManager NavManager
 
+@inherits BaseRazorPage
+
 <div class="col-lg-4 col-md-4 col-sm-4 container justify-content-center">
     <div class="jumbotron my-auto">
         <h3>MEOT Login</h3>
@@ -47,13 +49,17 @@
 
     private string ErrorMessage { get; set; }
 
-    private void HandleValidSubmit()
+    private async void HandleValidSubmit()
     {
         ErrorMessage = userManager.AttemptLogin(model);
 
-        if (string.IsNullOrEmpty(ErrorMessage))
+        if (!string.IsNullOrEmpty(ErrorMessage))
         {
-            NavManager.NavigateTo("/Dashboard");
+            return;
         }
+
+        await LoginAsync(model);
+
+        NavManager.NavigateTo("/");
     }
 }
