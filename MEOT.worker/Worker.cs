@@ -29,15 +29,19 @@ namespace MEOT.worker
             
             _logger = logger;
 
-            _db = new LiteDBDAL(args.Length == 2 ? args[1] : null);
+            var dbPath = args.Length == 2 ? args[1] : null;
 
-            _settings = _db.SelectFirstOrDefault<Settings>();
+            Console.WriteLine($"DB Path: {dbPath}");
+
+            _db = new LiteDBDAL(dbPath);
+            
+            _settings = _db.SelectOne<Settings>(a => a != null);
 
             _sourceManager = new SourceManager(_settings);
 
             new SettingsManager(_db).UpdateSources(_sourceManager.SourceNames);
 
-            _settings = _db.SelectFirstOrDefault<Settings>();
+            _settings = _db.SelectOne<Settings>(a => a != null);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -48,6 +52,8 @@ namespace MEOT.worker
 
                 foreach (var item in malware)
                 {
+                    Console.WriteLine($"Checking {item.SHA1}...");
+
                     var sourceResult = _sourceManager.CheckSources(item.SHA1);
 
                     item.NumDetections = 0;
