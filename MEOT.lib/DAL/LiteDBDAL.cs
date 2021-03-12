@@ -12,7 +12,7 @@ namespace MEOT.lib.DAL
     {
         private const string DB_NAME = "meot_litedb.db";
 
-        private string _dbName;
+        private readonly string _dbName;
 
         public LiteDBDAL(string pathToDB = DB_NAME)
         {
@@ -21,7 +21,7 @@ namespace MEOT.lib.DAL
 
         public void Insert<T>(T item) where T: BaseObject
         {
-            using var db = new LiteDB.LiteDatabase(DB_NAME);
+            using var db = new LiteDB.LiteDatabase(_dbName);
 
             var collection = db.GetCollection<T>();
 
@@ -30,7 +30,7 @@ namespace MEOT.lib.DAL
 
         public List<T> SelectAll<T>() where T : BaseObject
         {
-            using var db = new LiteDB.LiteDatabase(DB_NAME);
+            using var db = new LiteDB.LiteDatabase(_dbName);
 
             var collection = db.GetCollection<T>();
 
@@ -39,7 +39,7 @@ namespace MEOT.lib.DAL
 
         public List<T> SelectAll<T>(Expression<Func<T, bool>> expression) where T : BaseObject
         {
-            using var db = new LiteDB.LiteDatabase(DB_NAME);
+            using var db = new LiteDB.LiteDatabase(_dbName);
 
             var collection = db.GetCollection<T>();
 
@@ -48,7 +48,7 @@ namespace MEOT.lib.DAL
 
         public void Delete<T>(T item) where T : BaseObject
         {
-            using var db = new LiteDB.LiteDatabase(DB_NAME);
+            using var db = new LiteDB.LiteDatabase(_dbName);
 
             var collection = db.GetCollection<T>();
 
@@ -57,7 +57,7 @@ namespace MEOT.lib.DAL
 
         public void DeleteWhere<T>(System.Linq.Expressions.Expression<Func<T, bool>> expression) where T : BaseObject
         {
-            using var db = new LiteDB.LiteDatabase(DB_NAME);
+            using var db = new LiteDB.LiteDatabase(_dbName);
 
             var collection = db.GetCollection<T>();
 
@@ -66,7 +66,7 @@ namespace MEOT.lib.DAL
 
         public void DeleteById<T>(int id) where T : BaseObject
         {
-            using var db = new LiteDB.LiteDatabase(DB_NAME);
+            using var db = new LiteDB.LiteDatabase(_dbName);
 
             var collection = db.GetCollection<T>();
 
@@ -75,7 +75,7 @@ namespace MEOT.lib.DAL
 
         public void Update<T>(T item) where T : BaseObject
         {
-            using var db = new LiteDB.LiteDatabase(DB_NAME);
+            using var db = new LiteDB.LiteDatabase(_dbName);
 
             var collection = db.GetCollection<T>();
 
@@ -86,7 +86,7 @@ namespace MEOT.lib.DAL
 
         public T SelectOne<T>(int id) where T : BaseObject
         {
-            using var db = new LiteDB.LiteDatabase(DB_NAME);
+            using var db = new LiteDB.LiteDatabase(_dbName);
 
             var collection = db.GetCollection<T>();
 
@@ -95,7 +95,7 @@ namespace MEOT.lib.DAL
 
         public T SelectOne<T>(Expression<Func<T, bool>> expression) where T : BaseObject
         {
-            using var db = new LiteDB.LiteDatabase(DB_NAME);
+            using var db = new LiteDB.LiteDatabase(_dbName);
 
             var collection = db.GetCollection<T>();
 
@@ -104,7 +104,7 @@ namespace MEOT.lib.DAL
 
         public T SelectFirstOrDefault<T>() where T : BaseObject
         {
-            using var db = new LiteDB.LiteDatabase(DB_NAME);
+            using var db = new LiteDB.LiteDatabase(_dbName);
 
             var collection = db.GetCollection<T>();
 

@@ -36,7 +36,7 @@ namespace MEOT.worker
 
                 Console.WriteLine($"DB Path: {dbPath}");
 
-                if (!File.Exists(dbPath))
+                if (!string.IsNullOrEmpty(dbPath) && !File.Exists(dbPath))
                 {
                     Console.WriteLine("DB not found - exiting");
 
