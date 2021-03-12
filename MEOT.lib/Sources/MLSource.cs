@@ -11,14 +11,21 @@ namespace MEOT.lib.Sources
 
         public override bool RequiresKey => false;
 
+        private bool _initialized = false;
+
         public override void Initialize(string licenseKey)
         {
-            // Not needed
+            _initialized = false;
         }
 
         public override Dictionary<string, bool> QueryHash(string sha1)
         {
             var result = new Dictionary<string, bool>();
+
+            if (!_initialized)
+            {
+                return result;
+            }
 
             using var process = new Process
             {

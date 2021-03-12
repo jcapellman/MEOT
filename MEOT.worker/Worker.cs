@@ -25,9 +25,11 @@ namespace MEOT.worker
 
         public Worker(ILogger<Worker> logger)
         {
+            var args = Environment.GetCommandLineArgs();
+            
             _logger = logger;
 
-            _db = new LiteDBDAL();
+            _db = new LiteDBDAL(args.Length == 2 ? args[1] : null);
 
             _settings = _db.SelectFirstOrDefault<Settings>();
 

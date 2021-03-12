@@ -12,6 +12,13 @@ namespace MEOT.lib.DAL
     {
         private const string DB_NAME = "meot_litedb.db";
 
+        private string _dbName;
+
+        public LiteDBDAL(string pathToDB = DB_NAME)
+        {
+            _dbName = pathToDB ?? DB_NAME;
+        }
+
         public void Insert<T>(T item) where T: BaseObject
         {
             using var db = new LiteDB.LiteDatabase(DB_NAME);
