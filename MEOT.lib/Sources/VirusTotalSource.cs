@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Globalization;
 using System.Net.Http;
 using System.Text.Json;
 
@@ -22,7 +22,7 @@ namespace MEOT.lib.Sources
             _vtKey = licenseKey;
         }
 
-        public override Dictionary<string, bool> QueryHash(string sha1)
+        public override Dictionary<string, SourceItem> QueryHash(string sha1)
         {
             try
             {
@@ -35,15 +35,29 @@ namespace MEOT.lib.Sources
 
                 var fileReport = JsonSerializer.Deserialize<VTFileReport>(json);
 
-                return fileReport == null
-                    ? new Dictionary<string, bool>()
-                    : fileReport.scans.ToDictionary(vendor => vendor.Key, vendor => vendor.Value.detected);
+                var response = new Dictionary<string, SourceItem>();
+                
+                if (fileReport == null)
+                {
+                    return response;
+                }
+                
+                foreach (var (vendorName, scanResult) in fileReport.scans)
+                {
+                    response.Add(vendorName, new SourceItem
+                    {
+                        Detected = scanResult.detected,
+                        DetectedDate = DateTime.ParseExact(scanResult.update, "YYYYMMDD", CultureInfo.InvariantCulture)
+                    });
+                }
+
+                return response;
             }
             catch (Exception ex)
             {
                 // TODO: Logging
 
-                return new Dictionary<string, bool>();
+                return new Dictionary<string, SourceItem>();
             }
         }
     }

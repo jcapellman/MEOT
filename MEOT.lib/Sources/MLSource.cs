@@ -2,6 +2,7 @@
 using System.Diagnostics;
 
 using MEOT.lib.Sources.Base;
+using MEOT.lib.Sources.Objects;
 
 namespace MEOT.lib.Sources
 {
@@ -18,9 +19,9 @@ namespace MEOT.lib.Sources
             _initialized = false;
         }
 
-        public override Dictionary<string, bool> QueryHash(string sha1)
+        public override Dictionary<string, SourceItem> QueryHash(string sha1)
         {
-            var result = new Dictionary<string, bool>();
+            var result = new Dictionary<string, SourceItem>();
 
             if (!_initialized)
             {
@@ -42,7 +43,7 @@ namespace MEOT.lib.Sources
             var reader = process.StandardOutput;
             var output = reader.ReadToEnd();
 
-            result.Add(Name, (output == "true"));
+            result.Add(Name, null);
 
             process.WaitForExit();
 

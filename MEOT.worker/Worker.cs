@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -95,7 +96,7 @@ namespace MEOT.worker
                             var result = source.Value;
 
                             checkpoint.Payload = System.Text.Json.JsonSerializer.Serialize(result);
-                            checkpoint.Detections = result.Values.Count(a => a);
+                            checkpoint.Detections = result.Values.Count(a => a.Detected);
                             checkpoint.Vendors = result.Keys.Count;
 
                             if (newCheckpoint)
@@ -128,14 +129,14 @@ namespace MEOT.worker
                                     };
                                 }
 
-                                vendorCheckpoint.Detected = result[vendor];
+                                vendorCheckpoint.Detected = result[vendor].Detected;
 
                                 if (vendorCheckpoint.Detected)
                                 {
                                     vendorCheckpoint.HoursToDetection =
-                                        Math.Round(DateTimeOffset.Now.Subtract(item.DayZero).TotalHours, 0);
+                                        Math.Round(result[vendor].DetectedDate.Subtract(item.DayZero.DateTime).TotalHours, 0);
 
-                                    vendorCheckpoint.DetectionDate = DateTimeOffset.Now;
+                                    vendorCheckpoint.DetectionDate = result[vendor].DetectedDate;
                                 }
 
                                 if (newItem)
