@@ -36,7 +36,7 @@
     @foreach (var item in vendorData.DetailedAnalysis)
     {
         <tr>
-            <td><a href="/MalwareAnalysis/@item.MalwareId">@item.MalwareName</a></td>
+            <td><a href="/MalwareAnalysis/@item.MalwareName">@item.MalwareName</a></td>
             <td>@item.Detected</td>
             @if (item.HoursToDetect.HasValue)
             {
