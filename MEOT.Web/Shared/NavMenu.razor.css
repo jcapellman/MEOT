@@ -3,7 +3,7 @@
 }
 
 .top-row {
-    height: 3.5rem;
+    height: 3.0rem;
     background-color: rgba(0,0,0,0.4);
 }
 
@@ -12,7 +12,7 @@
 }
 
 .oi {
-    width: 2rem;
+    width: 2.5rem;
     font-size: 1.1rem;
     vertical-align: text-top;
     top: -2px;
