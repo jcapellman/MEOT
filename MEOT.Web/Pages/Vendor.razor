@@ -27,7 +27,8 @@
 <table class="table">
     <thead>
     <tr>
-        <th>Vendor Name</th>
+        <th>Malware Name</th>
+        <th>Attack Vector</th>
         <th>Detected</th>
         <th>Hours to Classification</th>
     </tr>
@@ -37,6 +38,7 @@
     {
         <tr>
             <td><a href="/MalwareAnalysis/@item.MalwareName">@item.MalwareName</a></td>
+            <td>@item.MalwareType</td>
             <td>@item.Detected</td>
             @if (item.HoursToDetect.HasValue)
             {
