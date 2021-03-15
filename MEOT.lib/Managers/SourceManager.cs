@@ -15,7 +15,7 @@ namespace MEOT.lib.Managers
         public SourceManager(Settings settings)
         {
             _sources = this.GetType().Assembly.GetTypes().Where(a => a.BaseType == typeof(BaseSource) && !a.IsAbstract)
-                .Select(a => (BaseSource) Activator.CreateInstance(a)).ToList();
+                .Select(a => (BaseSource) Activator.CreateInstance(a)).Where(a => a.Enabled).ToList();
 
             foreach (var source in _sources)
             {

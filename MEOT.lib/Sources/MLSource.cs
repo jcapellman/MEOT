@@ -14,6 +14,8 @@ namespace MEOT.lib.Sources
 
         private bool _initialized = false;
 
+        public override bool Enabled => false;
+
         public override void Initialize(string licenseKey)
         {
             _initialized = false;
