@@ -27,7 +27,7 @@ else if (!malware.Any())
             <th>SHA1</th>
             <th>Format</th>
             <th>Detections</th>
-            <th>Day 0</th>
+            <th>First Seen (Day 0)</th>
             
             <th>Actions</th>
         </tr>
@@ -40,7 +40,7 @@ else if (!malware.Any())
                 <td>@item.SHA1</td>
                 <td>@item.Format</td>
                 <td>@item.NumDetections</td>
-                <td>@item.DayZero</td>
+                <td>@item.DayZero.DateTime.ToShortDateString()</td>
                 <td>
                     <button class="btn btn-rounded" @onclick="() => ViewDetail(item)" title="View"><i class="bi-files"></i></button>
                 </td>
