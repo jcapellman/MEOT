@@ -107,7 +107,7 @@ namespace MEOT.worker
                             {
                                 _db.Update(checkpoint);
                             }
-
+                            
                             item.NumDetections += checkpoint.Detections;
 
                             foreach (var vendor in result.Keys)

@@ -47,7 +47,7 @@ namespace MEOT.lib.Sources
                     response.Add(vendorName, new SourceItem
                     {
                         Detected = scanResult.detected,
-                        DetectedDate = DateTime.ParseExact(scanResult.update, "YYYYMMDD", CultureInfo.InvariantCulture)
+                        DetectedDate = DateTime.ParseExact(scanResult.update, "yyyyMMdd", CultureInfo.InvariantCulture)
                     });
                 }
 
