@@ -17,5 +17,7 @@ namespace MEOT.lib.Containers
         public DateTime? DetectedDate { get; set; }
 
         public string Classification { get; set; }
+
+        public string VendorVersion { get; set; }
     }
 }

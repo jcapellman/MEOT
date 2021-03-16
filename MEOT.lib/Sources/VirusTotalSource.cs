@@ -48,7 +48,8 @@ namespace MEOT.lib.Sources
                     {
                         Detected = scanResult.detected,
                         DetectedDate = DateTime.ParseExact(scanResult.update, "yyyyMMdd", CultureInfo.InvariantCulture),
-                        Classification = scanResult.result
+                        Classification = scanResult.result,
+                        VendorVersion = scanResult.version
                     });
                 }
 

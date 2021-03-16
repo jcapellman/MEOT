@@ -9,5 +9,7 @@ namespace MEOT.lib.Sources.Objects
         public DateTime DetectedDate { get; set; }
 
         public string Classification { get; set; }
+
+        public string VendorVersion { get; set; }
     }
 }
