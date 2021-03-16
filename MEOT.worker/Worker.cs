@@ -137,6 +137,9 @@ namespace MEOT.worker
                                         Math.Round(result[vendor].DetectedDate.Subtract(item.DayZero.DateTime).TotalHours, 0);
 
                                     vendorCheckpoint.DetectionDate = result[vendor].DetectedDate;
+                                } else
+                                {
+                                    vendorCheckpoint.DetectionDate = null;
                                 }
 
                                 if (newItem)

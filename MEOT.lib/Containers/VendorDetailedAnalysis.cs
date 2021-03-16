@@ -1,4 +1,6 @@
-﻿namespace MEOT.lib.Containers
+﻿using System;
+
+namespace MEOT.lib.Containers
 {
     public class VendorDetailedAnalysis
     {
@@ -11,5 +13,7 @@
         public bool Detected { get; set; }
 
         public double? HoursToDetect { get; set; }
+
+        public DateTime? DetectedDate { get; set; }
     }
 }
