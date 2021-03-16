@@ -48,7 +48,7 @@ else if (!malware.Any())
 @code {
     private List<Malware> malware;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         malware = malwareManager.GetDashboardEnabled();
     }
