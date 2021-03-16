@@ -133,10 +133,15 @@ namespace MEOT.worker
 
                                 if (vendorCheckpoint.Detected)
                                 {
-                                    vendorCheckpoint.HoursToDetection =
-                                        Math.Round(result[vendor].DetectedDate.Subtract(item.DayZero.DateTime).TotalHours, 0);
+                                    if (!vendorCheckpoint.DetectionDate.HasValue)
+                                    {
+                                        vendorCheckpoint.HoursToDetection =
+                                            Math.Round(
+                                                result[vendor].DetectedDate.Subtract(item.DayZero.DateTime).TotalHours,
+                                                0);
 
-                                    vendorCheckpoint.DetectionDate = result[vendor].DetectedDate;
+                                        vendorCheckpoint.DetectionDate = result[vendor].DetectedDate;
+                                    }
                                 } else
                                 {
                                     vendorCheckpoint.DetectionDate = null;
