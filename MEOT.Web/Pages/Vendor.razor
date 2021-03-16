@@ -5,23 +5,27 @@
 @using MEOT.lib.Containers
 @using MEOT.lib.Managers
 
-<h1>@vendorName Analysis</h1>
+<h1>@vendorName</h1>
 
 <h2>Overview</h2>
-<p>
-    <label>
-        <strong>Average Hours To Detection</strong><br/>
-        @vendorData.AverageTimeToDetect
-    </label>
-</p>
+<div class="card bg-dark text-white">
+    <div class="card-body">
+        <p>
+            <label>
+                <strong class="text-uppercase">Average Hours To Detection</strong><br/>
+                @vendorData.AverageTimeToDetect
+            </label>
+        </p>
 
-<p>
-    <label>
-        <strong>Number of Detections / Number of Opportunities</strong><br/>
-        @vendorData.NumDetections / @vendorData.NumAttempts
-    </label>
-</p>
+        <p>
+            <label>
+                <strong class="text-uppercase">Number of Detections / Number of Opportunities</strong><br/>
+                @vendorData.NumDetections / @vendorData.NumAttempts
+            </label>
+        </p>
 
+    </div>
+</div>
 <h2>Detailed View</h2>
 
 <table class="table table-striped table-hover table-dark">
