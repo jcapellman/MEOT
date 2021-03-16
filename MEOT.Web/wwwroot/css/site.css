@@ -3,10 +3,17 @@
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     height: 100%;
+    background-color: #2e2e2e;
+    color: white;
 }
 
-a, .btn-link {
-    color: #0366d6;
+a, .btn-link, a:visited, a:hover {
+    color: gold;
+    font-weight: bold;
+}
+
+a:visited, a:hover {
+    cursor: pointer;
 }
 
 .btn-primary {
@@ -43,9 +50,14 @@ a, .btn-link {
     z-index: 1000;
 }
 
-    #blazor-error-ui .dismiss {
-        cursor: pointer;
-        position: absolute;
-        right: 0.75rem;
-        top: 0.5rem;
-    }
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}
+
+.table th {
+    text-transform: uppercase;
+    font-weight: bold;
+}

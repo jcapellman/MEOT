@@ -20,7 +20,7 @@ else if (!malware.Any())
 {
    <p>No Tracked Malware is enabled - add some <a href="/AddEditMalware">here</a></p>
 } else  {
-    <table class="table">
+    <table class="table table-striped table-hover table-dark">
         <thead>
         <tr>
             <th>Name</th>
@@ -28,22 +28,17 @@ else if (!malware.Any())
             <th>Format</th>
             <th>Detections</th>
             <th>First Seen (Day 0)</th>
-            
-            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
         @foreach (var item in malware)
         {
             <tr>
-                <td>@item.Name</td>
+                <td><a href="/MalwareAnalysis/@item.Id">@item.Name</a></td>
                 <td>@item.SHA1</td>
                 <td>@item.Format</td>
                 <td>@item.NumDetections</td>
                 <td>@item.DayZero.DateTime.ToShortDateString()</td>
-                <td>
-                    <button class="btn btn-rounded" @onclick="() => ViewDetail(item)" title="View"><i class="bi-files"></i></button>
-                </td>
             </tr>
         }
         </tbody>
