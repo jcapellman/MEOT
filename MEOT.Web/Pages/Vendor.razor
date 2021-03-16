@@ -40,9 +40,9 @@
         <tr>
             <td><a href="/MalwareAnalysis/@item.MalwareName">@item.MalwareName</a></td>
             <td>@item.MalwareType</td>
-            <td>@item.Detected</td>
+            <td>@(item.Detected ? "Yes" : "No")</td>
             <td>@item.Classification</td>
-            @if (item.HoursToDetect.HasValue)
+            @if (item.Detected && item.HoursToDetect.HasValue)
             {
                <td>@item.HoursToDetect.Value</td>
             }
