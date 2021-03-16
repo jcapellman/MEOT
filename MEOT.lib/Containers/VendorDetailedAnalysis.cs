@@ -15,5 +15,7 @@ namespace MEOT.lib.Containers
         public double? HoursToDetect { get; set; }
 
         public DateTime? DetectedDate { get; set; }
+
+        public string Classification { get; set; }
     }
 }

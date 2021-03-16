@@ -30,6 +30,7 @@
         <th>Malware Name</th>
         <th>Attack Vector</th>
         <th>Detected</th>
+        <th>Classification</th>
         <th>Hours to Classification</th>
     </tr>
     </thead>
@@ -40,6 +41,7 @@
             <td><a href="/MalwareAnalysis/@item.MalwareName">@item.MalwareName</a></td>
             <td>@item.MalwareType</td>
             <td>@item.Detected</td>
+            <td>@item.Classification</td>
             @if (item.HoursToDetect.HasValue)
             {
                <td>@item.HoursToDetect.Value</td>

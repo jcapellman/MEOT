@@ -129,6 +129,7 @@ namespace MEOT.worker
                                     };
                                 }
 
+                                vendorCheckpoint.Classification = result[vendor].Classification;
                                 vendorCheckpoint.Detected = result[vendor].Detected;
 
                                 if (vendorCheckpoint.Detected)

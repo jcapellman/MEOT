@@ -7,5 +7,7 @@ namespace MEOT.lib.Sources.Objects
         public bool Detected { get; set; }
 
         public DateTime DetectedDate { get; set; }
+
+        public string Classification { get; set; }
     }
 }
