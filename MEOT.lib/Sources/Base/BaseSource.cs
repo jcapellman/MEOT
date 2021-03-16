@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-using MEOT.lib.Sources.Objects;
+﻿using MEOT.lib.Containers;
 
 namespace MEOT.lib.Sources.Base
 {
@@ -14,6 +12,6 @@ namespace MEOT.lib.Sources.Base
 
         public abstract void Initialize(string licenseKey);
 
-        public abstract Dictionary<string, SourceItem> QueryHash(string sha1);
+        public abstract SourceContainer QueryHash(string sha1);
     }
 }

@@ -11,5 +11,7 @@ namespace MEOT.lib.Sources.Objects
         public string Classification { get; set; }
 
         public string VendorVersion { get; set; }
+
+        public string MD5 { get; set; }
     }
 }

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using MEOT.lib.Containers;
 using MEOT.lib.Objects;
 using MEOT.lib.Sources.Base;
-using MEOT.lib.Sources.Objects;
 
 namespace MEOT.lib.Managers
 {
@@ -32,9 +32,9 @@ namespace MEOT.lib.Managers
 
         public List<string> SourceNames => _sources.Select(a => a.Name).ToList();
         
-        public Dictionary<string, Dictionary<string, SourceItem>> CheckSources(string hash)
+        public Dictionary<string, SourceContainer> CheckSources(string hash)
         {
-            var result = new Dictionary<string, Dictionary<string, SourceItem>>();
+            var result = new Dictionary<string, SourceContainer>();
 
             foreach (var source in _sources)
             {

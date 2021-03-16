@@ -78,6 +78,11 @@ namespace MEOT.worker
 
                         foreach (var source in sourceResult)
                         {
+                            if (string.IsNullOrEmpty(item.MD5) && !string.IsNullOrEmpty(source.Value.MD5))
+                            {
+                                item.MD5 = source.Value.MD5;
+                            }
+
                             var newCheckpoint = false;
 
                             var checkpoint = _db.SelectOne<MalwareCheckpoint>(a => a.MalwareId == item.Id);
@@ -96,8 +101,8 @@ namespace MEOT.worker
                             var result = source.Value;
 
                             checkpoint.Payload = System.Text.Json.JsonSerializer.Serialize(result);
-                            checkpoint.Detections = result.Values.Count(a => a.Detected);
-                            checkpoint.Vendors = result.Keys.Count;
+                            checkpoint.Detections = result.SourceData.Values.Count(a => a.Detected);
+                            checkpoint.Vendors = result.SourceData.Keys.Count;
 
                             if (newCheckpoint)
                             {
@@ -110,7 +115,7 @@ namespace MEOT.worker
                             
                             item.NumDetections += checkpoint.Detections;
 
-                            foreach (var vendor in result.Keys)
+                            foreach (var vendor in result.SourceData.Keys)
                             {
                                 var newItem = false;
 
@@ -129,9 +134,9 @@ namespace MEOT.worker
                                     };
                                 }
 
-                                vendorCheckpoint.Classification = result[vendor].Classification;
-                                vendorCheckpoint.Detected = result[vendor].Detected;
-                                vendorCheckpoint.VendorVersion = result[vendor].VendorVersion;
+                                vendorCheckpoint.Classification = result.SourceData[vendor].Classification;
+                                vendorCheckpoint.Detected = result.SourceData[vendor].Detected;
+                                vendorCheckpoint.VendorVersion = result.SourceData[vendor].VendorVersion;
 
                                 if (vendorCheckpoint.Detected)
                                 {
@@ -139,10 +144,10 @@ namespace MEOT.worker
                                     {
                                         vendorCheckpoint.HoursToDetection =
                                             Math.Round(
-                                                result[vendor].DetectedDate.Subtract(item.DayZero.DateTime).TotalHours,
+                                                result.SourceData[vendor].DetectedDate.Subtract(item.DayZero.DateTime).TotalHours,
                                                 0);
 
-                                        vendorCheckpoint.DetectionDate = result[vendor].DetectedDate;
+                                        vendorCheckpoint.DetectionDate = result.SourceData[vendor].DetectedDate;
                                     }
                                 } else
                                 {

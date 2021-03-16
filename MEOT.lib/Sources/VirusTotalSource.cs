@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
 using System.Text.Json;
-
+using MEOT.lib.Containers;
 using MEOT.lib.Sources.Base;
 using MEOT.lib.Sources.Objects;
 
@@ -22,10 +22,15 @@ namespace MEOT.lib.Sources
             _vtKey = licenseKey;
         }
 
-        public override Dictionary<string, SourceItem> QueryHash(string sha1)
+        public override SourceContainer QueryHash(string sha1)
         {
             try
             {
+                var container = new SourceContainer
+                {
+                    SourceData = new Dictionary<string, SourceItem>()
+                };
+
                 using var httpClient = new HttpClient();
 
                 var json = httpClient
@@ -34,17 +39,17 @@ namespace MEOT.lib.Sources
 
 
                 var fileReport = JsonSerializer.Deserialize<VTFileReport>(json);
-
-                var response = new Dictionary<string, SourceItem>();
                 
                 if (fileReport == null)
                 {
-                    return response;
+                    return container;
                 }
-                
+
+                container.MD5 = fileReport.md5;
+
                 foreach (var (vendorName, scanResult) in fileReport.scans)
                 {
-                    response.Add(vendorName, new SourceItem
+                    container.SourceData.Add(vendorName, new SourceItem
                     {
                         Detected = scanResult.detected,
                         DetectedDate = DateTime.ParseExact(scanResult.update, "yyyyMMdd", CultureInfo.InvariantCulture),
@@ -53,13 +58,13 @@ namespace MEOT.lib.Sources
                     });
                 }
 
-                return response;
+                return container;
             }
             catch (Exception ex)
             {
                 // TODO: Logging
 
-                return new Dictionary<string, SourceItem>();
+                return new SourceContainer();
             }
         }
     }
