@@ -35,7 +35,7 @@ else if (!malware.Any())
         {
             <tr>
                 <td><a href="/MalwareAnalysis/@item.Id">@item.Name</a></td>
-                <td>@item.SHA1</td>
+                <td class="text-uppercase">@item.SHA1</td>
                 <td>@item.Format</td>
                 <td>@item.NumDetections</td>
                 <td>@item.DayZero.DateTime.ToShortDateString()</td>
@@ -47,11 +47,6 @@ else if (!malware.Any())
 
 @code {
     private List<Malware> malware;
-
-    protected void ViewDetail(Malware item)
-    {
-        NavManager.NavigateTo($"/MalwareAnalysis/{item.Id}");
-    }
 
     protected override async Task OnInitializedAsync()
     {
