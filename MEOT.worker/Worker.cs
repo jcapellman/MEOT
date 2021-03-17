@@ -1,5 +1,4 @@
 using System;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -8,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+using MEOT.lib.Common;
 using MEOT.lib.DAL;
 using MEOT.lib.DAL.Base;
 using MEOT.lib.Managers;
@@ -24,6 +24,8 @@ namespace MEOT.worker
         private IDAL _db;
 
         private readonly SourceManager _sourceManager;
+
+        public bool Refresh;
 
         public Worker(ILogger<Worker> logger)
         {
@@ -50,9 +52,18 @@ namespace MEOT.worker
 
                 _sourceManager = new SourceManager(_settings);
 
-                new SettingsManager(_db).UpdateSources(_sourceManager.SourceNames);
+                var settingsManager = new SettingsManager(_db);
+
+                settingsManager.UpdateSources(_sourceManager.SourceNames);
 
                 _settings = _db.SelectOne<Settings>(a => a != null);
+
+                Refresh = _settings.APIVersion != Constants.API;
+
+                if (Refresh)
+                {
+                    settingsManager.SaveSettings(_settings);
+                }
             }
             catch (Exception ex)
             {
@@ -147,7 +158,7 @@ namespace MEOT.worker
 
                                 if (vendorCheckpoint.Detected)
                                 {
-                                    if (!vendorCheckpoint.DetectionDate.HasValue)
+                                    if (!vendorCheckpoint.DetectionDate.HasValue || Refresh)
                                     {
                                         vendorCheckpoint.HoursToDetection =
                                             Math.Round(

@@ -17,5 +17,7 @@ namespace MEOT.lib.Objects
         public string SMTPPassword { get; set; }
 
         public Dictionary<string, string> Sources { get; set; }
+
+        public int APIVersion { get; set; }
     }
 }
