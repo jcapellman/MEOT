@@ -19,14 +19,17 @@ namespace MEOT.lib.Managers
 
             foreach (var source in _sources)
             {
-                if (settings == null || !settings.Sources.ContainsKey(source.Name))
+                if (settings == null || (settings.Sources != null && !settings.Sources.ContainsKey(source.Name)))
                 {
                     continue;
                 }
 
-                var key = settings.Sources[source.Name];
-                
-                source.Initialize(key);
+                if (settings.Sources != null && settings.Sources.ContainsKey(source.Name))
+                {
+                    var key = settings.Sources[source.Name];
+
+                    source.Initialize(key);
+                }
             }
         }
 

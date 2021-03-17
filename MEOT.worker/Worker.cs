@@ -62,6 +62,8 @@ namespace MEOT.worker
 
                 if (Refresh)
                 {
+                    _settings.APIVersion = Constants.API;
+
                     settingsManager.SaveSettings(_settings);
                 }
             }

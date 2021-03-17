@@ -95,20 +95,34 @@ namespace MEOT.lib.DAL
 
         public T SelectOne<T>(Expression<Func<T, bool>> expression) where T : BaseObject
         {
-            using var db = new LiteDB.LiteDatabase(_dbName);
+            try
+            {
+                using var db = new LiteDB.LiteDatabase(_dbName);
 
-            var collection = db.GetCollection<T>();
+                var collection = db.GetCollection<T>();
 
-            return collection.FindOne(expression);
+                return collection.FindOne(expression);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return Activator.CreateInstance<T>();
+            }
         }
 
         public T SelectFirstOrDefault<T>() where T : BaseObject
         {
-            using var db = new LiteDB.LiteDatabase(_dbName);
+            try
+            {
+                using var db = new LiteDB.LiteDatabase(_dbName);
 
-            var collection = db.GetCollection<T>();
+                var collection = db.GetCollection<T>();
 
-            return collection.FindOne(a => a != null);
+                return collection.FindOne(a => a != null);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return Activator.CreateInstance<T>();
+            }
         }
     }
 }
