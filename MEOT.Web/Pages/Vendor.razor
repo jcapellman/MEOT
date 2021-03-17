@@ -48,7 +48,7 @@
             <td>@item.Classification</td>
             @if (item.Detected && item.HoursToDetect.HasValue)
             {
-               <td>@(item.HoursToDetect.Value < 0 ? 0 : item.HoursToDetect.Value/24)</td>
+               <td>@(item.HoursToDetect.Value < 0 ? 0 : Math.Round(item.HoursToDetect.Value/24, 0))</td>
             }
             else
             {
