@@ -35,7 +35,7 @@ namespace MEOT.lib.Sources
 
                 var json = httpClient
                     .GetStringAsync(
-                        $"https://www.virustotal.com/vtapi/v2/file/report?apikey={_vtKey}&resource={sha1}").Result;
+                        $"https://www.virustotal.com/vtapi/v2/file/report?apikey={_vtKey}&resource={sha1}&allinfo=true").Result;
 
 
                 var fileReport = JsonSerializer.Deserialize<VTFileReport>(json);
@@ -47,6 +47,7 @@ namespace MEOT.lib.Sources
 
                 container.MD5 = fileReport.md5;
                 container.SHA256 = fileReport.sha256;
+                container.ScanDate = DateTime.ParseExact(fileReport.first_seen, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
 
                 foreach (var (vendorName, scanResult) in fileReport.scans)
                 {

@@ -88,6 +88,8 @@ namespace MEOT.worker
                                 item.SHA256 = source.Value.SHA256;
                             }
 
+                            item.DayZero = source.Value.ScanDate;
+
                             var newCheckpoint = false;
 
                             var checkpoint = _db.SelectOne<MalwareCheckpoint>(a => a.MalwareId == item.Id);
@@ -151,6 +153,11 @@ namespace MEOT.worker
                                             Math.Round(
                                                 result.SourceData[vendor].DetectedDate.Subtract(item.DayZero.DateTime).TotalHours,
                                                 0);
+
+                                        if (vendorCheckpoint.HoursToDetection < 0)
+                                        {
+                                            vendorCheckpoint.HoursToDetection = 0;
+                                        }
 
                                         vendorCheckpoint.DetectionDate = result.SourceData[vendor].DetectedDate;
                                     }
