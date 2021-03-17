@@ -1,7 +1,5 @@
 ﻿@using MEOT.lib.Objects
 
-@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
-
 @code {
     public bool IsAuthenticated => User != null;
 
@@ -11,19 +9,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (await LocalStorage.ContainKeyAsync(Key))
-        {
-            User = await LocalStorage.GetItemAsync<User>(Key);
-        }
     }
 
     protected async void Logout()
     {
-        await LocalStorage.RemoveItemAsync(Key);
     }
 
     protected async Task LoginAsync(User user) {
-         await LocalStorage.SetItemAsync(Key, user);
     }
 
     protected void RedirectHome(NavigationManager navManager)
