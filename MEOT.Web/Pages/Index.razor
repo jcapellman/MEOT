@@ -42,7 +42,7 @@ else if (!malware.Any())
         @foreach (var item in malware)
         {
             <tr>
-                <td><a href="/MalwareAnalysis/@item.Id">@item.Name</a></td>
+                <td><a href="/MalwareAnalysis/@item.SHA1">@item.Name</a></td>
                 <td class="text-uppercase">@item.SHA1</td>
                 <td>@item.Format</td>
                 <td>@item.NumDetections</td>
