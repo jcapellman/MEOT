@@ -12,7 +12,7 @@
     <div class="card-body">
         <p>
             <label>
-                <strong class="text-uppercase">Average Hours To Detection</strong><br/>
+                <strong class="text-uppercase">Average Days To Detection</strong><br/>
                 @vendorData.AverageTimeToDetect
             </label>
         </p>
@@ -35,7 +35,7 @@
         <th>Attack Vector</th>
         <th>Detected</th>
         <th>Classification</th>
-        <th>Hours to Classification</th>
+        <th>Days to Classification</th>
     </tr>
     </thead>
     <tbody>
@@ -48,7 +48,7 @@
             <td>@item.Classification</td>
             @if (item.Detected && item.HoursToDetect.HasValue)
             {
-               <td>@item.HoursToDetect.Value</td>
+               <td>@(item.HoursToDetect.Value < 0 ? 0 : item.HoursToDetect.Value/24)</td>
             }
             else
             {
