@@ -28,36 +28,50 @@ else if (!malware.Any())
 {
    <p>No Tracked Malware is enabled - add some <a href="/AddEditMalware">here</a></p>
 } else  {
-    <table class="table table-striped table-hover table-dark">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>SHA1</th>
-            <th>Format</th>
-            <th>Detections</th>
-            <th>First Seen (Day 0)</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var item in malware)
-        {
+    <input type="text" class="form-control" style="width: 500px" placeholder="search and filter by name or hash" @bind-value="searchQuery" @bind-value:event="oninput" /> <br/>
+
+    @if (FilteredMalware.Any())
+    {
+        <table class="table table-striped table-hover table-dark">
+            <thead>
             <tr>
-                <td><a href="/MalwareAnalysis/@item.SHA1">@item.Name</a></td>
-                <td class="text-uppercase">@item.SHA1</td>
-                <td>@item.Format</td>
-                <td>@item.NumDetections</td>
-                <td>@item.DayZero.DateTime.ToShortDateString()</td>
+                <th>Name</th>
+                <th>SHA1</th>
+                <th>Format</th>
+                <th>Detections</th>
+                <th>First Seen (Day 0)</th>
             </tr>
-        }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            @foreach (var item in FilteredMalware)
+            {
+                <tr>
+                    <td><a href="/MalwareAnalysis/@item.SHA1">@item.Name</a></td>
+                    <td class="text-uppercase">@item.SHA1</td>
+                    <td>@item.Format</td>
+                    <td>@item.NumDetections</td>
+                    <td>@item.DayZero.DateTime.ToShortDateString()</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No Tracked Malware matches that search criteria</p>
+    }
 }
 
 @code {
+    private string searchQuery = string.Empty;
+
     private List<Malware> malware;
 
     protected override void OnInitialized()
     {
         malware = malwareManager.GetDashboardEnabled();
     }
+
+    List<Malware> FilteredMalware => malware.Where(
+        a => a.SHA1.ToLower().Contains(searchQuery.ToLower()) || a.Name.ToLower().Contains(searchQuery.ToLower())).ToList();
 }
