@@ -83,6 +83,11 @@ namespace MEOT.worker
                                 item.MD5 = source.Value.MD5;
                             }
 
+                            if (string.IsNullOrEmpty(item.SHA256) && !string.IsNullOrEmpty(source.Value.SHA256))
+                            {
+                                item.SHA256 = source.Value.SHA256;
+                            }
+
                             var newCheckpoint = false;
 
                             var checkpoint = _db.SelectOne<MalwareCheckpoint>(a => a.MalwareId == item.Id);

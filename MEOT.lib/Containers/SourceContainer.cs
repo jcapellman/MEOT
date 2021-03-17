@@ -8,6 +8,8 @@ namespace MEOT.lib.Containers
     {
         public string MD5 { get; set; }
 
+        public string SHA256 { get; set; }
+
         public Dictionary<string, SourceItem> SourceData { get; set; }
     }
 }

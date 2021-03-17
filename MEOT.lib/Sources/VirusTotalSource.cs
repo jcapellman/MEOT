@@ -46,6 +46,7 @@ namespace MEOT.lib.Sources
                 }
 
                 container.MD5 = fileReport.md5;
+                container.SHA256 = fileReport.sha256;
 
                 foreach (var (vendorName, scanResult) in fileReport.scans)
                 {
