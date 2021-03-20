@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using MEOT.lib.DAL;
 using MEOT.lib.Managers;
 using MEOT.lib.Objects;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace MEOT.WebAPI
 {
@@ -48,6 +49,11 @@ namespace MEOT.WebAPI
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
