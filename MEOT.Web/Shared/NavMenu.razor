@@ -1,7 +1,5 @@
-﻿@inherits BaseRazorPage
-
-<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="/">MEOT</a><br/>
+﻿<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">MEOT.Web</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -10,53 +8,21 @@
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="/">
-                <i class="bi-house"></i>&nbsp; Home
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="TrendingAnalysis">
-                <i class="bi-stack"></i>&nbsp; Trending Analysis
+            <NavLink class="nav-link" href="counter">
+                <span class="oi oi-plus" aria-hidden="true"></span> Counter
             </NavLink>
         </li>
-        
-        @if (IsAuthenticated)
-        {
-            <li class="nav-item px-3">
-                <NavLink class="nav-link" href="ManageMalware">
-                    <i class="bi-hdd"></i>&nbsp; Manage Malware
-                </NavLink>
-            </li>
-            <li class="nav-item px-3">
-                <NavLink class="nav-link" href="ManageUsers">
-                    <i class="bi-person-lines-fill"></i>&nbsp; Manage Users
-                </NavLink>
-            </li>
-            <li class="nav-item px-3">
-                <NavLink class="nav-link" href="Settings">
-                    <i class="bi-gear"></i>&nbsp; Settings
-                </NavLink>
-            </li>
-            <li class="nav-item px-3">
-                <NavLink class="nav-link" href="Logout">
-                    <i class="bi-door-open"></i>&nbsp; Logout
-                </NavLink>
-            </li>
-        }
-        else
-        {
-            <li class="nav-item px-3">
-                <NavLink class="nav-link" href="Login">
-                    <i class="bi-door-closed"></i>&nbsp; Login
-                </NavLink>
-            </li>
-        }
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="fetchdata">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+            </NavLink>
+        </li>
     </ul>
-</div>
-
-<div style="font-size: x-small; color: white; text-align: center">
-    Version 2021.3.7 | Source on <a href="https://github.com/jcapellman/MEOT" target="_blank">Github</a><br/>
-    (C) 2021 <a href="https://github.com/jcapellman" target="_blank">Jarred Capellman</a>
 </div>
 
 @code {

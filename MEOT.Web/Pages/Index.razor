@@ -1,12 +1,9 @@
 ﻿@page "/"
 
-@using MEOT.lib.Managers
 @using MEOT.lib.Objects
+@using MEOT.Web.Clients
 
-@inject MalwareManager malwareManager
-@inject NavigationManager NavManager
-
-@inherits BaseRazorPage
+@inject MalwareDashboardHttpClient httpClient
 
 <h1>Malware Efficacy Over Time</h1>
 
@@ -26,7 +23,7 @@
 }
 else if (!malware.Any())
 {
-   <p>No Tracked Malware is enabled - add some <a href="/AddEditMalware">here</a></p>
+    <p>No Tracked Malware is enabled - add some <a href="/AddEditMalware">here</a></p>
 } else  {
     <input type="text" class="form-control" style="width: 500px" placeholder="search and filter by name or hash" @bind-value="searchQuery" @bind-value:event="oninput" /> <br/>
 
@@ -65,13 +62,11 @@ else if (!malware.Any())
 @code {
     private string searchQuery = string.Empty;
 
-    private List<Malware> malware;
+    private Malware[] malware;
 
-    protected override void OnInitialized()
-    {
-        malware = malwareManager.GetDashboardEnabled();
-    }
+    protected override async Task OnInitializedAsync() => 
+        malware = await httpClient.GetMalwareDashboard();
 
-    List<Malware> FilteredMalware => malware.Where(
+    IEnumerable<Malware> FilteredMalware => malware.Where(
         a => a.SHA1.ToLower().Contains(searchQuery.ToLower()) || a.Name.ToLower().Contains(searchQuery.ToLower())).ToList();
 }
