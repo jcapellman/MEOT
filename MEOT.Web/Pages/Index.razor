@@ -65,7 +65,7 @@ else if (!malware.Any())
     private Malware[] malware;
 
     protected override async Task OnInitializedAsync() => 
-        malware = await httpClient.GetMalwareDashboard();
+        malware = await httpClient.GetMalwareDashboardAsync();
 
     IEnumerable<Malware> FilteredMalware => malware.Where(
         a => a.SHA1.ToLower().Contains(searchQuery.ToLower()) || a.Name.ToLower().Contains(searchQuery.ToLower())).ToList();

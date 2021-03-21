@@ -29,6 +29,9 @@ namespace MEOT.Web
             builder.Services.AddHttpClient<MalwareDashboardHttpClient>(client =>
                 client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
 
+            builder.Services.AddHttpClient<MalwareAnalysisClient>(client =>
+                client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+
             await builder.Build().RunAsync();
         }
     }
