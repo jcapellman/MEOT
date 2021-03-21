@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Pages\MalwareAnalysis.razor" />
     <Content Remove="Pages\TrendingAnalysis.razor" />
     <Content Remove="Pages\Vendor.razor" />
   </ItemGroup>
