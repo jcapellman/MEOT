@@ -64,7 +64,13 @@ namespace MEOT.WebAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseCors();
+
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true)
+                .AllowCredentials());
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
