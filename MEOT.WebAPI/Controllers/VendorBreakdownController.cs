@@ -16,7 +16,8 @@ namespace MEOT.WebAPI.Controllers
             _manager = manager;
         }
 
-        [HttpGet]
+        // GET: api/VendorBreakdown/vendor
+        [HttpGet("{vendorName}")]
         public VendorContainer Get(string vendorName) => _manager.GetVendorData(vendorName);
     }
 }
