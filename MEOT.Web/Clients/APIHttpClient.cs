@@ -17,7 +17,10 @@ namespace MEOT.Web.Clients
 
         public async Task<MalwareAnalysisContainer> GetAnalysisAsync(string query) => await GetAsync<MalwareAnalysisContainer>($"MalwareAnalysis/{query}");
 
-        public async Task<VendorContainer> GetVendorData(string vendorName) =>
+        public async Task<VendorContainer> GetVendorDataAsync(string vendorName) =>
             await GetAsync<VendorContainer>($"VendorBreakdown/{vendorName}");
+
+        public async Task<TrendingAnalysisContainer> GetTrendingDashboardAsync() =>
+            await GetAsync<TrendingAnalysisContainer>("TrendingAnalysis");
     }
 }

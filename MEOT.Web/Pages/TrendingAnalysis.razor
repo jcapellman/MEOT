@@ -1,9 +1,9 @@
 ﻿@page "/TrendingAnalysis"
 
-@using MEOT.lib.Managers
 @using MEOT.lib.Containers
+@using MEOT.Web.Clients
 
-@inject TrendingAnalysisManager trendingAnalysisManager
+@inject APIHttpClient client
 
 <h1>Trending Analysis</h1>
 
@@ -59,7 +59,9 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        topVendors = trendingAnalysisManager.GetTopVendorsFromDuration();
-        worstVendors = trendingAnalysisManager.GetWorstVendorsFromDuration();
+        var container = await client.GetTrendingDashboardAsync();
+
+        topVendors = container.TopVendors;
+        worstVendors = container.WorstVendors;
     }
 }

@@ -73,5 +73,5 @@ else
     private VendorContainer vendorData { get; set; }
 
     protected override async Task OnInitializedAsync() =>
-        vendorData = await client.GetVendorData(vendorName);
+        vendorData = await client.GetVendorDataAsync(vendorName);
 }
