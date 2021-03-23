@@ -3,7 +3,7 @@
 @using MEOT.lib.Objects
 @using MEOT.Web.Clients
 
-@inject MalwareDashboardHttpClient httpClient
+@inject APIHttpClient httpClient
 
 <h1>Malware Efficacy Over Time</h1>
 
@@ -63,7 +63,7 @@ else if (!malware.Any())
     private string searchQuery = string.Empty;
 
     private Malware[] malware;
-
+    
     protected override async Task OnInitializedAsync() => 
         malware = await httpClient.GetMalwareDashboardAsync();
 
