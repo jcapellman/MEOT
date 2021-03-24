@@ -6,7 +6,6 @@ using MEOT.lib.Common;
 using MEOT.Web.Clients;
 
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MEOT.Web
@@ -21,13 +20,6 @@ namespace MEOT.Web
             builder.Services.AddHttpClient<APIHttpClient>(client =>
                 client.BaseAddress = new Uri(Constants.API_URL));
             
-            builder.Services.AddOidcAuthentication(options =>
-            {
-                // Configure your authentication provider options here.
-                // For more information, see https://aka.ms/blazor-standalone-auth
-                builder.Configuration.Bind("Local", options.ProviderOptions);
-            });
-   
             await builder.Build().RunAsync();
         }
     }
