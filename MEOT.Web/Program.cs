@@ -1,6 +1,9 @@
 using System;
 using System.Threading.Tasks;
 
+using Blazorise;
+using Blazorise.Bootstrap;
+
 using MEOT.lib.Common;
 
 using MEOT.Web.Clients;
@@ -16,7 +19,14 @@ namespace MEOT.Web
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
-            
+
+            builder.Services
+                .AddBlazorise(options =>
+                {
+                    options.ChangeTextOnKeyPress = true;
+                })
+                .AddBootstrapProviders();
+
             builder.Services.AddHttpClient<APIHttpClient>(client =>
                 client.BaseAddress = new Uri(Constants.API_URL));
             
