@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MEOT.Web.Clients.Base
@@ -16,6 +17,22 @@ namespace MEOT.Web.Clients.Base
             try
             {
                 return await http.GetFromJsonAsync<T>(url);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+
+                throw;
+            }
+        }
+
+        protected async void PostAsync(string url, string content)
+        {
+            try
+            {
+                var data = new StringContent(System.Text.Json.JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");
+                
+                await http.PostAsync(url, data);
             }
             catch (Exception ex)
             {
