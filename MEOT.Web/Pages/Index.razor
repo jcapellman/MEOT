@@ -57,7 +57,7 @@ else if (!malware.Any())
     {
         <p>No Tracked Malware matches that search criteria</p>
 
-        <a href="">Add Malware</a>
+        <button class="btn-primary" @onclick="AddMalware">Add Malware to Database</button>
     }
 }
 
@@ -66,9 +66,9 @@ else if (!malware.Any())
 
     private Malware[] malware;
 
-    protected void AddMalware(string hash)
+    protected void AddMalware()
     {
-        httpClient.AddMalware(hash);
+        httpClient.AddMalware(searchQuery);
     }
     
     protected override async Task OnInitializedAsync() => 
