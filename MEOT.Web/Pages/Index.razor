@@ -60,7 +60,7 @@ else
     {
         <p>No Tracked Malware matches that search criteria</p>
 
-        <input type="text" class="form-control" style="width: 500px" placeholder="malware" name @bind-value="MalwareName" @bind-value:event="oninput" />
+        <input type="text" class="form-control" style="width: 500px" placeholder="malware name" @bind-value="MalwareName" @bind-value:event="oninput" />
         <br />
 
         <button class="btn-primary" @onclick="AddMalware">Add Malware to Database</button>
