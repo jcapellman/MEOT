@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 using MEOT.lib.Containers;
 using MEOT.lib.Objects;
+using MEOT.lib.WebObjects;
 using MEOT.Web.Clients.Base;
 
 namespace MEOT.Web.Clients
@@ -23,6 +24,6 @@ namespace MEOT.Web.Clients
         public async Task<TrendingAnalysisContainer> GetTrendingDashboardAsync() =>
             await GetAsync<TrendingAnalysisContainer>("TrendingAnalysis");
 
-        public async void AddMalware(string hash, string name) => await GetAsync<bool>($"MalwareManagement/{hash}/{name}");
+        public async void AddMalware(NewMalwareRequestItem malwareItem) => await PostAsync<NewMalwareRequestItem>("MalwareManagement", malwareItem);
     }
 }

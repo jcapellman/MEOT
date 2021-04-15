@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
@@ -26,13 +27,15 @@ namespace MEOT.Web.Clients.Base
             }
         }
 
-        protected async void PostAsync(string url, string content)
+        protected async Task<bool> PostAsync<T>(string url, T item)
         {
             try
             {
-                var data = new StringContent(System.Text.Json.JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");
+                var data = new StringContent(System.Text.Json.JsonSerializer.Serialize(item), Encoding.UTF8, "application/json");
                 
-                await http.PostAsync(url, data);
+                var response = await http.PostAsync(url, data);
+
+                return response.StatusCode == HttpStatusCode.OK;
             }
             catch (Exception ex)
             {
