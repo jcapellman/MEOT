@@ -9,9 +9,9 @@
 
 <h2>About</h2>
 <p>
-    This website is a purely educational resource for my research of trends with 0 day malware and time to detection. 
-    This data will be used to provide a source of data in my DSc I am currently pursuing in CyberSecurity (focusing on creating a next generation NIDS).<br/><br/>
-    
+    This website is a purely educational resource for my research of trends with 0 day malware and time to detection.
+    This data will be used to provide a source of data in my DSc I am currently pursuing in CyberSecurity (focusing on creating a next generation NIDS).<br /><br />
+
     Feature suggestions, issues or general comments are welcome via <a href="https://github.com/jcapellman/meot/" target="_blank">GitHub</a>.
 </p>
 
@@ -24,32 +24,35 @@
 else if (!malware.Any())
 {
     <p>No Tracked Malware is enabled - add some <a href="/AddEditMalware">here</a></p>
-} else  {
-    <input type="text" class="form-control" style="width: 500px" placeholder="search and filter by name or hash" @bind-value="searchQuery" @bind-value:event="oninput" /> <br/>
+}
+else
+{
+    <input type="text" class="form-control" style="width: 500px" placeholder="search and filter by name or hash" @bind-value="searchQuery" @bind-value:event="oninput" />
+    <br />
 
     @if (FilteredMalware.Any())
     {
         <table class="table table-striped table-hover table-dark">
             <thead>
-            <tr>
-                <th>Name</th>
-                <th>SHA1</th>
-                <th>Format</th>
-                <th>Detections</th>
-                <th>First Seen (Day 0)</th>
-            </tr>
+                <tr>
+                    <th>Name</th>
+                    <th>SHA1</th>
+                    <th>Format</th>
+                    <th>Detections</th>
+                    <th>First Seen (Day 0)</th>
+                </tr>
             </thead>
             <tbody>
-            @foreach (var item in FilteredMalware)
-            {
-                <tr>
-                    <td><a href="/MalwareAnalysis/@item.SHA1">@item.Name</a></td>
-                    <td class="text-uppercase">@item.SHA1</td>
-                    <td>@item.Format</td>
-                    <td>@item.NumDetections</td>
-                    <td>@item.DayZero.DateTime.ToShortDateString()</td>
-                </tr>
-            }
+                @foreach (var item in FilteredMalware)
+                {
+                    <tr>
+                        <td><a href="/MalwareAnalysis/@item.SHA1">@item.Name</a></td>
+                        <td class="text-uppercase">@item.SHA1</td>
+                        <td>@item.Format</td>
+                        <td>@item.NumDetections</td>
+                        <td>@item.DayZero.DateTime.ToShortDateString()</td>
+                    </tr>
+                }
             </tbody>
         </table>
     }
@@ -57,21 +60,25 @@ else if (!malware.Any())
     {
         <p>No Tracked Malware matches that search criteria</p>
 
+        <input type="text" class="form-control" style="width: 500px" placeholder="malware" name @bind-value="MalwareName" @bind-value:event="oninput" />
+        <br />
+
         <button class="btn-primary" @onclick="AddMalware">Add Malware to Database</button>
     }
 }
 
 @code {
     private string searchQuery = string.Empty;
+    private string MalwareName = string.Empty;
 
     private Malware[] malware;
 
     protected void AddMalware()
     {
-        httpClient.AddMalware(searchQuery);
+        httpClient.AddMalware(searchQuery, MalwareName);
     }
-    
-    protected override async Task OnInitializedAsync() => 
+
+    protected override async Task OnInitializedAsync() =>
         malware = await httpClient.GetMalwareDashboardAsync();
 
     IEnumerable<Malware> FilteredMalware => malware.Where(

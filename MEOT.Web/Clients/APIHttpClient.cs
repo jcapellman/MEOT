@@ -23,6 +23,6 @@ namespace MEOT.Web.Clients
         public async Task<TrendingAnalysisContainer> GetTrendingDashboardAsync() =>
             await GetAsync<TrendingAnalysisContainer>("TrendingAnalysis");
 
-        public async void AddMalware(string hash) => await GetAsync<bool>($"MalwareManagement/{hash}");
+        public async void AddMalware(string hash, string name) => await GetAsync<bool>($"MalwareManagement/{hash}/{name}");
     }
 }
